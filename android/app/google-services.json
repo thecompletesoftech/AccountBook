@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "596084894869",
+    "project_id": "jdf-finance",
+    "storage_bucket": "jdf-finance.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:596084894869:android:391eff5f3bdabb7055bf9c",
+        "android_client_info": {
+          "package_name": "com.example.account_book"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "596084894869-kflhoeb2597jjhs9cgpoqhuiccubmk4a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnwZa1GLYG53LEswAgRfFVZbV43wu0zBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "596084894869-kflhoeb2597jjhs9cgpoqhuiccubmk4a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
