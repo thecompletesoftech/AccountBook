@@ -120,13 +120,16 @@ class _CustomertransactionState extends State<Customertransaction> {
 
     var size = MediaQuery.of(context).size;
     return WillPopScope(
-        onWillPop: () async => false,
+        onWillPop: () async => true,
         child: Scaffold(
           appBar: AppBar(
               leading: IconButton(
                   icon: Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () => nextScreen(
-                      context, HomeScreen(searchtxt: widget.searchtxt))),
+                  onPressed: () => backScreen(context)
+                  //  nextScreen(
+                  //     context, HomeScreen(searchtxt: widget.searchtxt))
+
+                  ),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

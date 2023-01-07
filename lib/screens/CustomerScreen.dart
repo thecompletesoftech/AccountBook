@@ -66,6 +66,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
       body: RefreshIndicator(
         onRefresh: () => _getEventsFromFirestore(),
         child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             // shrinkWrap: true,
             children: [

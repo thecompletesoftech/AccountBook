@@ -17,4 +17,3 @@ samples, guidance on mobile development, and a full API reference.
 
 gmail:-Jdfinance308@gmail.com
 password:-Surat@123
-
