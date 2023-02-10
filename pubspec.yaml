@@ -71,7 +71,8 @@ dependencies:
   flutter_calendar_carousel: ^2.4.0
   cached_network_image:
   flutter_launcher_icons:
-  
+  get:
+  get_storage: ^2.0.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

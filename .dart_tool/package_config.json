@@ -332,6 +332,18 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "get",
+      "rootUri": "file:///C:/Users/admin1/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/get-4.6.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
+      "name": "get_storage",
+      "rootUri": "file:///C:/Users/admin1/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/get_storage-2.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "http",
       "rootUri": "file:///C:/Users/admin1/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/http-0.13.4",
       "packageUri": "lib/",
@@ -854,7 +866,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2022-12-24T11:23:54.113629Z",
+  "generated": "2023-02-10T08:24:02.304894Z",
   "generator": "pub",
   "generatorVersion": "2.18.5"
 }

@@ -125,11 +125,10 @@ class _CustomertransactionState extends State<Customertransaction> {
           appBar: AppBar(
               leading: IconButton(
                   icon: Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () => backScreen(context)
-                  //  nextScreen(
-                  //     context, HomeScreen(searchtxt: widget.searchtxt))
-
-                  ),
+                  onPressed: () =>
+                      // backScreen(context)
+                      nextScreen(
+                          context, HomeScreen(searchtxt: widget.searchtxt))),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

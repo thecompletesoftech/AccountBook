@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_sms/flutter_sms.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:passcode_screen/passcode_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -203,7 +204,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                               // final fullContact =
                               //     await FlutterContacts.getContact(
                               //         data[index]['contact_id']);
-
+                              GetStorage().write("searchtxt", customer.text);
                               nextScreen(
                                   context,
                                   Customertransaction(
@@ -403,6 +404,10 @@ class _CustomerScreenState extends State<CustomerScreen> {
       setState(() {
         showloading = false;
       });
+      if (GetStorage().read("searchtxt") != null) {
+        setdata();
+      }
+
       // setState(() {
       //   data = data.where((element) => element['deleted'] == "0").toList();
 
@@ -459,6 +464,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
     if (enteredKeyword.isEmpty) {
       _getEventsFromFirestore();
+      GetStorage().erase();
       // if the search field is empty or only contains white-space, we'll display all users
     } else {
       results = data
@@ -519,5 +525,10 @@ class _CustomerScreenState extends State<CustomerScreen> {
     setState(() {
       role = prefs.getString('role')!;
     });
+  }
+
+  setdata() {
+    customer.text = GetStorage().read("searchtxt");
+    _runFilter(customer.text);
   }
 }

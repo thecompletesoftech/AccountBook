@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:account_book/splash_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -28,6 +29,8 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 void main() async {
+  await GetStorage.init();
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
