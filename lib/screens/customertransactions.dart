@@ -120,7 +120,7 @@ class _CustomertransactionState extends State<Customertransaction> {
 
     var size = MediaQuery.of(context).size;
     return WillPopScope(
-        onWillPop: () async => true,
+        onWillPop: () async => false,
         child: Scaffold(
           appBar: AppBar(
               leading: IconButton(
