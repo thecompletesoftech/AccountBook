@@ -612,7 +612,6 @@ class _CustomertransactionState extends State<Customertransaction> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 role == "collector"
                     ? Container()
@@ -643,7 +642,7 @@ class _CustomertransactionState extends State<Customertransaction> {
                                   color: Colors.red,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10))),
-                              width: size.width * 0.4,
+                              width: size.width * 0.35,
                               height: size.height * 0.05,
                               alignment: Alignment.bottomCenter,
                               child: Center(
@@ -654,6 +653,17 @@ class _CustomertransactionState extends State<Customertransaction> {
                               ))),
                         ),
                       ),
+                GestureDetector(
+                    onTap: (() {
+                      nextScreen(
+                          context, HomeScreen(searchtxt: widget.searchtxt));
+                    }),
+                    child: Container(
+                        width: 50,
+                        child: Icon(
+                          Icons.arrow_circle_left,
+                          size: 45,
+                        ))),
                 GestureDetector(
                   onTap: () {
                     nextScreen(
@@ -682,7 +692,7 @@ class _CustomertransactionState extends State<Customertransaction> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(10))),
                         height: size.height * 0.05,
-                        width: size.width * 0.4,
+                        width: size.width * 0.35,
                         child: Center(
                             child: Text(
                           "You Got " + '\u{20B9} ',
