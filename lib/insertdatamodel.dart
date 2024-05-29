@@ -39,11 +39,11 @@ class Insetdatamodel with ChangeNotifier {
       cnxt,
       token) async {
     final users = FirebaseFirestore.instance.collection('customer_record');
-
     // final document_id =
     //     FirebaseFirestore.instance.collection('customer_record').doc().id;
 
     users.add({
+      'id':"",
       'name': name.toString(),
       'mobile_no': mobile_no.toString(),
       'description': des,
@@ -55,6 +55,7 @@ class Insetdatamodel with ChangeNotifier {
       "password": "123456",
       "token": " "
     }).then((value) {
+      upadtedocId(value.id,"customer_record");
       insertentry(Collector_id, name, status_collector, des, amount, date,
           image, type, value.id, d_status, cnxt, mobile_no, p_image, token);
     }).catchError((error) => print("Failed to add user: $error"));
@@ -268,7 +269,16 @@ class Insetdatamodel with ChangeNotifier {
         .then((value) => print("customer deleted"))
         .catchError((error) => print("Failed to update user: $error"));
   }
+  upadtedocId(id, table_name) async {
+    final users = FirebaseFirestore.instance.collection(table_name);
+    users
+        .doc(id)
+        .update({'id': id})
+        .then((value) => print("doc updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
 
+  
   upadtedeltestatus_entry(id, status, table_name) {
     FirebaseFirestore.instance
         .collection(table_name)
@@ -306,6 +316,8 @@ class Insetdatamodel with ChangeNotifier {
     //   }
     // });
   }
+
+
 
   deleterecord(id) {
     CollectionReference users_delete =

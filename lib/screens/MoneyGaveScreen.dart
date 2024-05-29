@@ -311,6 +311,7 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
               });
             } else {
               final users = FirebaseFirestore.instance.collection("Entry");
+
               if (widget.amount != null) {
                 users.doc(widget.entry_id).update({
                   'amount': amount.text,
@@ -379,7 +380,7 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
                           " ",
                           context,
                           widget.token);
-                  print(" u..id" + widget.u_id.toString());
+                  // print(" u..id" + widget.u_id.toString());
                   Api()
                       .apicall_post(
                           "https://fcm.googleapis.com/fcm/send",

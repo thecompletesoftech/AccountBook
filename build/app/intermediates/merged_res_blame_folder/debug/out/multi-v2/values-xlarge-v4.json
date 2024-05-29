@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Flutter_Projects\\AccountBook\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-xlarge-v4\\values-xlarge-v4.xml",
+            "outputFile": "/Users/imac/Documents/Flutter Projects/The complete softech projects/AccountBook/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-xlarge-v4/values-xlarge-v4.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\admin1\\.gradle\\caches\\transforms-3\\57e80e9452316ad9163cdfa9f1221e05\\transformed\\appcompat-1.2.0\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "source": "/Users/imac/.gradle/caches/transforms-3/57e80e9452316ad9163cdfa9f1221e05/transformed/appcompat-1.2.0/res/values-xlarge-v4/values-xlarge-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7",
                         "startColumns": "4,4,4,4,4,4",

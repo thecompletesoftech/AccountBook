@@ -1,17 +1,17 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Flutter_Projects\\AccountBook\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
+            "outputFile": "/Users/imac/Documents/Flutter Projects/The complete softech projects/AccountBook/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "D:\\Flutter_Projects\\AccountBook\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "/Users/imac/Documents/Flutter Projects/The complete softech projects/AccountBook/android/app/src/main/res/values-night/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
-                        "startOffsets": "175,831",
+                        "startOffsets": "172,817",
                         "endLines": "7,16",
                         "endColumns": "12,12",
-                        "endOffsets": "482,997"
+                        "endOffsets": "475,981"
                     },
                     "to": {
                         "startLines": "2,7",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\admin1\\.gradle\\caches\\transforms-3\\57e80e9452316ad9163cdfa9f1221e05\\transformed\\appcompat-1.2.0\\res\\values-night-v8\\values-night-v8.xml",
+                    "source": "/Users/imac/.gradle/caches/transforms-3/57e80e9452316ad9163cdfa9f1221e05/transformed/appcompat-1.2.0/res/values-night-v8/values-night-v8.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",

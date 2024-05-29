@@ -33,7 +33,7 @@ class CustomerScreen extends StatefulWidget {
 }
 
 class _CustomerScreenState extends State<CustomerScreen> {
-  var data = [];
+  var customerlistdata = [];
   var entry_data = [];
   var dataenty = [];
   List idlist = [];
@@ -54,9 +54,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
     Provider.of<Insetdatamodel>(context, listen: false).gettotal_amount_got();
     // _get_customer_record('customer_record');
     // _get_entry_record('Entry');
-
     _getEventsFromFirestore();
-
     super.initState();
   }
 
@@ -184,7 +182,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     Divider(),
                     if (showloading == true)
                       Center(child: CircularProgressIndicator()),
-                    if (data.length == 0 && showloading == false)
+                    if (customerlistdata.length == 0 && showloading == false)
                       Padding(
                         padding: const EdgeInsets.all(10),
                         child: Center(
@@ -196,9 +194,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
                     ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: data.length,
+                        itemCount: customerlistdata.length,
                         itemBuilder: (BuildContext context, int index) {
-                          var fname = data[index]['name'].split('');
+                          var fname = customerlistdata[index]['name'].split('');
                           return GestureDetector(
                             onTap: () async {
                               // final fullContact =
@@ -208,14 +206,15 @@ class _CustomerScreenState extends State<CustomerScreen> {
                               nextScreen(
                                   context,
                                   Customertransaction(
-                                      name: data[index]['name'],
+                                      name: customerlistdata[index]['name'],
                                       iscustomer: "1",
-                                      id: idlist[index].toString(),
-                                      mobile_no: data[index]['mobile_no'],
+                                      id: customerlistdata[index]['id'].toString(),
+                                      // idlist[index].toString(),
+                                      mobile_no: customerlistdata[index]['mobile_no'],
                                       contact: null,
-                                      p_image: data[index]['p_image'],
-                                      address: data[index]['address'],
-                                      token: data[index]['token'],
+                                      p_image: customerlistdata[index]['p_image'],
+                                      address: customerlistdata[index]['address'],
+                                      token: customerlistdata[index]['token'],
                                       searchtxt: customer.text));
                             },
                             child: Container(
@@ -260,7 +259,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                       // data.removeAt(index);
                                     } else {
                                       setState(() {
-                                        _callNumber(data[index]['mobile_no']
+                                        _callNumber(customerlistdata[index]['mobile_no']
                                             .toString());
                                         // _launchPhoneURL(
                                         //     data[index]['mobile_no'].toString());
@@ -273,7 +272,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                         contentPadding: EdgeInsets.zero,
                                         leading: CircleAvatar(
                                           backgroundColor: Colors.blueGrey,
-                                          child: data[index]['p_image'] == " "
+                                          child: customerlistdata[index]['p_image'] == " "
                                               ? Text(
                                                   fname[0].toString(),
                                                   style: TextStyles.mb18,
@@ -286,7 +285,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                                         BorderRadius.circular(
                                                             50),
                                                     child: CachedNetworkImage(
-                                                      imageUrl: data[index]
+                                                      imageUrl: customerlistdata[index]
                                                           ['p_image'],
                                                       placeholder: (context,
                                                               url) =>
@@ -322,7 +321,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                         //       color: Colors.black, fontSize: 15),
                                         // ),
                                         subtitle: Text(
-                                          Jiffy(data[index]['last_updated_date']
+                                          Jiffy(customerlistdata[index]['last_updated_date']
                                                   .toString())
                                               .fromNow()
                                               .toString(),
@@ -332,7 +331,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                           padding:
                                               const EdgeInsets.only(bottom: 10),
                                           child: Text(
-                                            data[index]['name'].toString(),
+                                            customerlistdata[index]['name'].toString(),
                                             style: TextStyles.mb14,
                                           ),
                                         )),
@@ -368,7 +367,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
   // }
 
   _getEventsFromFirestore() async {
-    data.clear();
+    customerlistdata.clear();
+    idlist.clear();
     Provider.of<Insetdatamodel>(context, listen: false).gettotal_amount_gave();
     Provider.of<Insetdatamodel>(context, listen: false).gettotal_amount_got();
     setState(() {
@@ -387,7 +387,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
         print("idlkist" + idlist.toString());
         Map<String, dynamic> fetchdata = queryDocumentSnapshot.data();
         setState(() {
-          data.add(fetchdata);
+          customerlistdata.add(fetchdata);
         });
 
         // setState(() {
@@ -413,7 +413,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
       // });
 
-      print("data fetch" + data.toString());
+      // print("data fetch" + customerlistdata.toString());
     });
     // for (var i = 0; i <= tmplist.length; i++) {
     //   setState(() {
@@ -467,14 +467,14 @@ class _CustomerScreenState extends State<CustomerScreen> {
       GetStorage().erase();
       // if the search field is empty or only contains white-space, we'll display all users
     } else {
-      results = data
+      results = customerlistdata
           .where((user) =>
               user["name"].toLowerCase().contains(enteredKeyword.toLowerCase()))
           .toList();
       // we use the toLowerCase() method to make it case-insensitive
     }
     setState(() {
-      data = results;
+      customerlistdata = results;
     });
   }
 
@@ -496,11 +496,11 @@ class _CustomerScreenState extends State<CustomerScreen> {
     ).then((value) {
       if (value == '1') {
         setState(() {
-          data.sort();
+          customerlistdata.sort();
         });
       } else {
         setState(() {
-          data.reversed;
+          customerlistdata.reversed;
         });
       }
     });
