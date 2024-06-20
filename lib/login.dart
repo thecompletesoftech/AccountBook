@@ -311,6 +311,7 @@ class _loginState extends State<login> {
             prefs.setString("business_name", data[0]['business_name']);
             prefs.setString("role", "admin");
             prefs.setString("fcmtoken_admin", fcmtoken);
+            prefs.setString("admin_id", data[0]['id']);
             
             final users = FirebaseFirestore.instance.collection("admin");
             users
