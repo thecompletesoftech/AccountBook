@@ -49,11 +49,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
   @override
   void initState() {
-    // getrole();
-    // Provider.of<Insetdatamodel>(context, listen: false).gettotal_amount_gave();
-    // Provider.of<Insetdatamodel>(context, listen: false).gettotal_amount_got();
-    // _get_customer_record('customer_record');
-    // _get_entry_record('Entry');
+    getrole();
+    Provider.of<Insetdatamodel>(context, listen: false).gettotal_amount_gave();
+    Provider.of<Insetdatamodel>(context, listen: false).gettotal_amount_got();
     _getEventsFromFirestore();
     super.initState();
   }
@@ -370,16 +368,16 @@ class _CustomerScreenState extends State<CustomerScreen> {
     customerlistdata.clear();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     idlist.clear();
-    // Provider.of<Insetdatamodel>(context, listen: false).gettotal_amount_gave();
-    // Provider.of<Insetdatamodel>(context, listen: false).gettotal_amount_got();
+    Provider.of<Insetdatamodel>(context, listen: false).gettotal_amount_gave();
+    Provider.of<Insetdatamodel>(context, listen: false).gettotal_amount_got();
     setState(() {
       showloading = true;
     });
-
+    //.where('admin_id', isEqualTo: prefs.get('admin_id'))
     FirebaseFirestore.instance
         .collection('customer_record')
         .orderBy('last_updated_date', descending: true)
-        .where('deleted', isEqualTo: '0').where('admin_id', isEqualTo: prefs.get('admin_id'))
+        .where('deleted', isEqualTo: '0')
         .get()
         .then((QueryDocumentSnapshot) {
       for (var queryDocumentSnapshot in QueryDocumentSnapshot.docs) {
