@@ -10,18 +10,12 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-import 'package:flutter_sms/flutter_sms.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:passcode_screen/passcode_screen.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/services.dart';
 import '../Constant/TextStyles/Textstyles.dart';
 import '../insertdatamodel.dart';
-import '../widget/BottomBar.dart';
 import 'ViewReport.dart';
 
 class CustomerScreen extends StatefulWidget {

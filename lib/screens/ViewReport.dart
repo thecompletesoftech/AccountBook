@@ -115,6 +115,10 @@ class _ViewReportState extends State<ViewReport> {
                                       value: 2,
                                       child: Text("today"),
                                     ),
+                                    PopupMenuItem<int>(
+                                      value: 3,
+                                      child: Text("Create excel File"),
+                                    ),
                                   ];
                                 },
                                 onSelected: (value) {
@@ -125,6 +129,8 @@ class _ViewReportState extends State<ViewReport> {
                                     showrangfilter(context);
                                   } else if (value == 2) {
                                     today_filter();
+                                  }else if(value == 3){
+                                     createexcel();
                                   }
                                 })
                           ],
@@ -287,13 +293,13 @@ class _ViewReportState extends State<ViewReport> {
             ]),
           ),
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            createexcel();
-          },
-          label: Text('Create excel File'.toString()),
-          backgroundColor: Colors.green,
-        ),
+        // floatingActionButton: FloatingActionButton.extended(
+        //   onPressed: () {
+        //     createexcel();
+        //   },
+        //   label: Text('Create excel File'.toString()),
+        //   backgroundColor: Colors.green,
+        // ),
       ),
     );
   }
