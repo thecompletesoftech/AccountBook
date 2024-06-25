@@ -655,8 +655,9 @@ class _CustomertransactionState extends State<Customertransaction> {
                       ),
                 GestureDetector(
                     onTap: (() {
-                      nextScreen(
-                          context, HomeScreen(searchtxt: widget.searchtxt));
+                      Navigator.pop(context,total_amount);
+                      // nextScreen(
+                      //     context, HomeScreen(searchtxt: widget.searchtxt));
                     }),
                     child: Container(
                         width: 50,
@@ -1192,7 +1193,8 @@ class _CustomertransactionState extends State<Customertransaction> {
           if (fetchdata_got.length == 0) {
             print("hii");
           } else
-            for (var i = 0; i <= fetchdata_got.length; i++) {
+            for (var i = 0; i < fetchdata_got.length; i++) {
+              print("amount fetch amount"+ fetchdata_got[i]['amount'].toString());
               setState(() {
                 total_amount_got =
                     double.parse(fetchdata_got[i]['amount']) + total_amount_got;

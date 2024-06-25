@@ -303,7 +303,10 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
                 print("update entry block run....");
                 users.doc(widget.entry_id).update({
                   'amount': amount.text,
-                  'description': description.text
+                  'description': description.text,
+                  'date': dateinput.text.isEmpty
+                              ? DateFormat('yyyy-MM-dd').format(DateTime.now()).toString()
+                              : dateinput.text,
                 }).then((value) {
                   print("entry updated");
 

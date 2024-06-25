@@ -43,7 +43,7 @@ class Insetdatamodel with ChangeNotifier {
     //     FirebaseFirestore.instance.collection('customer_record').doc().id;
 
     users.add({
-      'id':"",
+      'id': "",
       'name': name.toString(),
       'mobile_no': mobile_no.toString(),
       'description': des,
@@ -55,7 +55,7 @@ class Insetdatamodel with ChangeNotifier {
       "password": "123456",
       "token": " "
     }).then((value) {
-      upadtedocId(value.id,"customer_record");
+      upadtedocId(value.id, "customer_record");
       insertentry(Collector_id, name, status_collector, des, amount, date,
           image, type, value.id, d_status, cnxt, mobile_no, p_image, token);
     }).catchError((error) => print("Failed to add user: $error"));
@@ -75,7 +75,7 @@ class Insetdatamodel with ChangeNotifier {
       'role': 'collector',
       'address': " ",
       'p_image': null,
-      'token':token
+      'token': token
     }).then((value) {
       print("collector added" + value.id);
 
@@ -138,11 +138,7 @@ class Insetdatamodel with ChangeNotifier {
 
   gettotal_amount_gave() {
     var finaldata_gave = [];
-
     data.clear();
-
-    finaldata_gave.clear();
-
     total_amount_gave = 0;
 
     FirebaseFirestore.instance
@@ -153,12 +149,11 @@ class Insetdatamodel with ChangeNotifier {
         .then((QueryDocumentSnapshot) {
       for (var value in QueryDocumentSnapshot.docs) {
         Map<String, dynamic> fetchdata = value.data();
-
         finaldata_gave.add(fetchdata);
       }
-      print("final gave data" + finaldata_gave.length.toString());
+      print("final gave data" + finaldata_gave.toString());
 
-      for (int i = 0; i <= finaldata_gave.length; i++) {
+      for (int i = 0; i < finaldata_gave.length; i++) {
         total_amount_gave =
             double.parse(finaldata_gave[i]['amount']) + total_amount_gave!;
 
@@ -198,6 +193,34 @@ class Insetdatamodel with ChangeNotifier {
     // });
   }
 
+  gettotal_amount_gaveByuserid(userid) async {
+    var finaldata_gave = [];
+    data.clear();
+    finaldata_gave.clear();
+    double total_amount_gave = 0;
+
+    await FirebaseFirestore.instance
+        .collection('Entry')
+        .where('user_id', isEqualTo: userid.toString())
+        .where('type', isEqualTo: "0")
+        .get()
+        .then((QueryDocumentSnapshot) {
+      for (var value in QueryDocumentSnapshot.docs) {
+        Map<String, dynamic> fetchdata = value.data();
+        finaldata_gave.add(fetchdata);
+      }
+      print("final gave data" + finaldata_gave.length.toString());
+
+      for (int i = 0; i < finaldata_gave.length; i++) {
+        total_amount_gave =
+            double.parse(finaldata_gave[i]['amount']) + total_amount_gave;
+
+        print('total gave' + total_amount_gave.toString());
+      }
+    });
+    return total_amount_gave;
+  }
+
   gettotal_amount_got() {
     var finaldata_Got = [];
 
@@ -219,9 +242,9 @@ class Insetdatamodel with ChangeNotifier {
 
         finaldata_Got.add(fetchdata);
       }
-      print("final got data" + finaldata_Got.toString());
+      print("final got data" + finaldata_Got.length.toString());
 
-      for (int i = 0; i <= finaldata_Got.length; i++) {
+      for (int i = 0; i < finaldata_Got.length; i++) {
         total_amount_got =
             double.parse(finaldata_Got[i]['amount']) + total_amount_got!;
       }
@@ -261,6 +284,48 @@ class Insetdatamodel with ChangeNotifier {
     // });
   }
 
+  gettotal_amount_gotbyuserid(userid) async {
+    var finaldata_Got = [];
+
+    got_data.clear();
+
+    double total_amount_got = 0;
+
+    await FirebaseFirestore.instance
+        .collection('Entry')
+        .where('user_id', isEqualTo: userid.toString())
+        .where('type', isEqualTo: "1")
+        .get()
+        .then((QueryDocumentSnapshot) {
+      for (var value in QueryDocumentSnapshot.docs) {
+        Map<String, dynamic> fetchdata = value.data();
+
+        finaldata_Got.add(fetchdata);
+      }
+      print("final got data" + finaldata_Got.toString());
+
+      for (int i = 0; i < finaldata_Got.length; i++) {
+        total_amount_got =
+            double.parse(finaldata_Got[i]['amount']) + total_amount_got;
+      }
+      print('total got' + total_amount_got.toString());
+      notifyListeners();
+    
+    });
+  return total_amount_got;
+  
+  }
+
+  get_total_Userwillget(userid) async {
+    double gavetotal = await gettotal_amount_gaveByuserid(userid);
+    print("youwillget==" + gavetotal.toString());
+    double gottotal = await gettotal_amount_gotbyuserid(userid);
+    print("youwillget-----" + gottotal.toString());
+    var finalget = gavetotal - gottotal;
+    print("finalget******" + finalget.toString());
+    return gavetotal - gottotal;
+  }
+
   upadtedeltestatus(id, status, table_name) async {
     final users = FirebaseFirestore.instance.collection(table_name);
     users
@@ -269,6 +334,7 @@ class Insetdatamodel with ChangeNotifier {
         .then((value) => print("customer deleted"))
         .catchError((error) => print("Failed to update user: $error"));
   }
+
   upadtedocId(id, table_name) async {
     final users = FirebaseFirestore.instance.collection(table_name);
     users
@@ -278,7 +344,6 @@ class Insetdatamodel with ChangeNotifier {
         .catchError((error) => print("Failed to update user: $error"));
   }
 
-  
   upadtedeltestatus_entry(id, status, table_name) {
     FirebaseFirestore.instance
         .collection(table_name)
@@ -316,8 +381,6 @@ class Insetdatamodel with ChangeNotifier {
     //   }
     // });
   }
-
-
 
   deleterecord(id) {
     CollectionReference users_delete =
