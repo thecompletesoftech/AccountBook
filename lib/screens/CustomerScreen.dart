@@ -1,14 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 import 'package:account_book/Constant/navigaotors/Navagate_Next.dart';
 import 'package:account_book/screens/customertransactions.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:get/utils.dart';
 import 'package:get_storage/get_storage.dart';
@@ -32,7 +28,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
   var entry_data = [];
   var dataenty = [];
   List idlist = [];
-  TextEditingController customer = TextEditingController();
+  TextEditingController serachtext = TextEditingController();
   bool isAuthenticated = false;
   bool showloading = false;
   List dataonly = [];
@@ -41,476 +37,472 @@ class _CustomerScreenState extends State<CustomerScreen> {
   @override
   void initState() {
     getrole();
-    Provider.of<Insetdatamodel>(context, listen: false)
-        .get_total_Userwillget("62W4P72gFwfoWyOfYB0j");
-    // Provider.of<Insetdatamodel>(context, listen: false).gettotal_amount_gave();
-    // Provider.of<Insetdatamodel>(context, listen: false).gettotal_amount_got();
-    _getEventsFromFirestore();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: () => _getEventsFromFirestore(),
-        child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          child: Column(
-            // shrinkWrap: true,
-            children: [
-              role == "collector"
-                  ? Container()
-                  : Container(
-                      padding: EdgeInsets.only(left: 20, right: 20),
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Text(
-                                          '\u{20B9} ' +
-                                              Provider.of<Insetdatamodel>(
-                                                      context)
-                                                  .t_amout_gave
-                                                  .toString(),
-                                          style: TextStyles.withColor(
-                                              TextStyles.mb20, Colors.red)),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text("you  Gave",
-                                          style: TextStyles.withColor(
-                                              TextStyles.mn14, Colors.red))
-                                    ],
-                                  ),
-                                  VerticalDivider(
-                                    width: 5,
-                                    color: Colors.black,
-                                    thickness: 2,
-                                  ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                          '\u{20B9} ' +
-                                              Provider.of<Insetdatamodel>(
-                                                      context)
-                                                  .t_amout_got
-                                                  .toString(),
-                                          style: TextStyles.withColor(
-                                              TextStyles.mb20, Colors.green)),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text("you  Got",
-                                          style: TextStyles.withColor(
-                                              TextStyles.mn14, Colors.green))
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Divider(),
-                              GestureDetector(
-                                onTap: () {
-                                  nextScreen(context, ViewReport());
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+      body: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Column(
+          // shrinkWrap: true,
+          children: [
+            role == "collector"
+                ? Container()
+                : Container(
+                    padding: EdgeInsets.only(left: 20, right: 20),
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Column(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text("View Report",
-                                          style: TextStyles.withColor(
-                                              TextStyles.mb14, Colors.black)),
+                                    FutureBuilder<double>(
+                                      future: Provider.of<Insetdatamodel>(
+                                              context)
+                                          .gettotal_amount_gave(), // function where you call your api
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<double> snapshot) {
+                                        // AsyncSnapshot<Your object type>
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return Center(
+                                              child: Text(
+                                                  '\u{20B9} ' +
+                                                      "0.0".toString(),
+                                                  style: TextStyles.withColor(
+                                                      TextStyles.mb20,
+                                                      Colors.red)));
+                                        } else {
+                                          if (snapshot.hasError)
+                                            return Center(
+                                                child: Text(
+                                                    'Error: ${snapshot.error}'));
+                                          else
+                                            return Text(
+                                                '\u{20B9} ' +
+                                                    snapshot.data.toString(),
+                                                style: TextStyles.withColor(
+                                                    TextStyles.mb20,
+                                                    Colors
+                                                        .red)); // snapshot.data  :- get your object which is pass from your downloadData() function
+                                        }
+                                      },
                                     ),
-                                    SizedBox(width: 10),
-                                    Icon(
-                                      Icons.arrow_forward_ios_outlined,
-                                      size: 15,
-                                    )
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text("you  Gave",
+                                        style: TextStyles.withColor(
+                                            TextStyles.mn14, Colors.red))
                                   ],
                                 ),
+                                VerticalDivider(
+                                  width: 5,
+                                  color: Colors.black,
+                                  thickness: 2,
+                                ),
+                                Column(
+                                  children: [
+                                    FutureBuilder<double>(
+                                      future:
+                                          Provider.of<Insetdatamodel>(context)
+                                              .gettotal_amount_got(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<double> snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return Center(
+                                              child: Text('\u{20B9}' + "0.0",
+                                                  style: TextStyles.withColor(
+                                                      TextStyles.mb20,
+                                                      Colors.green)));
+                                        } else {
+                                          if (snapshot.hasError)
+                                            return Center(
+                                                child: Text(
+                                                    'Error: ${snapshot.error}'));
+                                          else
+                                            return Text(
+                                                '\u{20B9}' +
+                                                    snapshot.data.toString(),
+                                                style: TextStyles.withColor(
+                                                    TextStyles.mb20,
+                                                    Colors.green));
+                                        }
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text("you  Got",
+                                        style: TextStyles.withColor(
+                                            TextStyles.mn14, Colors.green))
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Divider(),
+                            GestureDetector(
+                              onTap: () {
+                                nextScreen(context, ViewReport());
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text("View Report",
+                                        style: TextStyles.withColor(
+                                            TextStyles.mb14, Colors.black)),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Icon(
+                                    Icons.arrow_forward_ios_outlined,
+                                    size: 15,
+                                  )
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                  Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Container(
-                      
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: TextField(
-                        // textAlign: TextAlign.center,
-                        onChanged: (text) {
-                          _runFilter(text);
-                        },
-                        controller: customer,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            prefixIcon: Icon(
-                              Icons.search,
-                              size: 30,
-                            ),
-                            hintText: 'search customer',
-                            hintStyle: TextStyles.mb14),
-                      ),
+                  ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    child: TextField(
+                      // textAlign: TextAlign.center,
+                      onChanged: (value) async {
+                        await searchedcustomertest(value);
+                      },
+                      controller: serachtext,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          prefixIcon: Icon(
+                            Icons.search,
+                            size: 30,
+                          ),
+                          hintText: 'search customer',
+                          hintStyle: TextStyles.mb14),
                     ),
                   ),
-                  
-                 
-                  if (showloading == true)
-                    Center(child: CircularProgressIndicator()),
-                  if (customerlistdata.length == 0 && showloading == false)
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Center(
-                          child: Text(
-                        "NO DATA FOUND",
-                        style: TextStyles.mb14,
-                      )),
-                    ),
-                 
-                  ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: customerlistdata.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        var fname = customerlistdata[index]['name'].split('');
-                        return GestureDetector(
-                          onTap: () async {
-                            GetStorage().write("searchtxt", customer.text);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Customertransaction(
-                                        name: customerlistdata[index]['name'],
-                                        iscustomer: "1",
-                                        id: customerlistdata[index]['id']
-                                            .toString(),
-                                        // idlist[index].toString(),
-                                        mobile_no: customerlistdata[index]
-                                            ['mobile_no'],
-                                        contact: null,
-                                        p_image: customerlistdata[index]
-                                            ['p_image'],
-                                        address: customerlistdata[index]
-                                            ['address'],
-                                        token: customerlistdata[index]
-                                            ['token'],
-                                        searchtxt:
-                                            customer.text)));
-                          },
-                          child: Column(
-                            children: [
-                              Dismissible(
-                                background: Container(
-                                    alignment: Alignment.centerLeft,
-                                    color: Colors.green,
-                                    child: Icon(
-                                      Icons.call,
-                                      color: Colors.white,
-                                    )),
-                                // secondaryBackground: Container(
-                                //   padding: EdgeInsets.only(right: 10),
-                                //   color: Colors.red,
-                                //   alignment: Alignment.centerRight,
-                                //   child: Icon(
-                                //     Icons.delete,
-                                //     color: Colors.white,
-                                //   ),
-                                // ),
-                                key: UniqueKey(),
-                                onDismissed: (DismissDirection direction) {
-                                  if (direction == DismissDirection.endToStart) {
-                                    // Provider.of<Insetdatamodel>(
-                                    //         context,
-                                    //         listen: false)
-                                    //     .upadtedeltestatus(
-                                    //         idlist[index].toString(),
-                                    //         "1",
-                                    //         "customer_record");
-
-                                    // Provider.of<Insetdatamodel>(
-                                    //         context,
-                                    //         listen: false)
-                                    //     .upadtedeltestatus_entry(
-                                    //         idlist[index].toString(),
-                                    //         "1",
-                                    //         "Entry");
-
-                                    // data.removeAt(index);
-                                  } else {
-                                    setState(() {
-                                      _callNumber(customerlistdata[index]
-                                              ['mobile_no']
-                                          .toString());
-                                      // _launchPhoneURL(
-                                      //     data[index]['mobile_no'].toString());
-                                    });
-                                  }
-                                },
-                                child: ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  leading: CircleAvatar(
-                                    backgroundColor: Colors.blueGrey,
-                                    child: customerlistdata[index]['p_image'] ==
-                                            " "
-                                        ? Text(
-                                            fname[0].toString(),
-                                            style: TextStyles.mb18,
-                                          )
-                                        : Container(
-                                            width: 55,
-                                            height: 100,
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                              child: CachedNetworkImage(
-                                                imageUrl: customerlistdata[index]
-                                                    ['p_image'],
-                                                placeholder: (context, url) =>
-                                                    CircularProgressIndicator(),
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        Icon(Icons.error),
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                  color: Colors.blueGrey,
+                ),
+                serachtext.text.length > 0
+                    ? ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: seachresult.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          var fname = seachresult[index]['name'].split('');
+                          return GestureDetector(
+                            onTap: () async {
+                              GetStorage().write("searchtxt", serachtext.text);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Customertransaction(
+                                          name: seachresult[index]['name'],
+                                          iscustomer: "1",
+                                          id: seachresult[index]['id']
+                                              .toString(),
+                                          // idlist[index].toString(),
+                                          mobile_no: seachresult[index]
+                                              ['mobile_no'],
+                                          contact: null,
+                                          p_image: seachresult[index]
+                                              ['p_image'],
+                                          address: seachresult[index]
+                                              ['address'],
+                                          token: seachresult[index]['token'],
+                                          searchtxt: serachtext.text)));
+                            },
+                            child: Column(
+                              children: [
+                                Dismissible(
+                                  background: Container(
+                                      alignment: Alignment.centerLeft,
+                                      color: Colors.green,
+                                      child: Icon(
+                                        Icons.call,
+                                        color: Colors.white,
+                                      )),
+                                  key: UniqueKey(),
+                                  onDismissed: (DismissDirection direction) {
+                                    if (direction ==
+                                        DismissDirection.endToStart) {
+                                    } else {
+                                      setState(() {
+                                        _callNumber(customerlistdata[index]
+                                                ['mobile_no']
+                                            .toString());
+                                      });
+                                    }
+                                  },
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets.zero,
+                                    leading: CircleAvatar(
+                                      backgroundColor: Colors.blueGrey,
+                                      child: seachresult[index]['p_image'] ==
+                                              " "
+                                          ? Text(
+                                              fname[0].toString(),
+                                              style: TextStyles.mb18,
+                                            )
+                                          : Container(
+                                              width: 55,
+                                              height: 100,
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                child: CachedNetworkImage(
+                                                  imageUrl:
+                                                      customerlistdata[index]
+                                                          ['p_image'],
+                                                  placeholder: (context, url) =>
+                                                      CircularProgressIndicator(),
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                          Icon(Icons.error),
+                                                  fit: BoxFit.cover,
                                                 ),
-                                                // image:
-                                                //     DecorationImage(
-                                                //   fit: BoxFit.fill,
-                                                //   image: NetworkImage(
-                                                //     data[index]
-                                                //         ['p_image'],
-                                                //   ),
-                                                // ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(100))),
-                                          ),
-                                    radius: 30,
-                                  ),
-                                  trailing: Column(
-                                    children: [
-                                      Text(
-                                        customerlistdata[index]['youllgetamount']
-                                            .toString(),
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 15),
-                                      ).paddingOnly(bottom: 5),
-                                      Text(
-                                        "you'll Get",
-                                        style: TextStyles.withColor(
-                                            TextStyles.mn14, Colors.red),
+                                              ),
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color: Colors.blueGrey,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              100))),
+                                            ),
+                                      radius: 30,
+                                    ),
+                                    trailing: Column(
+                                      children: [
+                                        Text(
+                                          seachresult[index]['youllgetamount']
+                                              .toString(),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15),
+                                        ).paddingOnly(bottom: 5),
+                                        Text(
+                                          "you'll Get",
+                                          style: TextStyles.withColor(
+                                              TextStyles.mn14, Colors.red),
+                                        ),
+                                      ],
+                                    ),
+                                    subtitle: Text(
+                                      Jiffy(seachresult[index]
+                                                  ['last_updated_date']
+                                              .toString())
+                                          .fromNow()
+                                          .toString(),
+                                      style: TextStyles.mb12,
+                                    ),
+                                    title: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 10),
+                                      child: Text(
+                                        seachresult[index]['name'].toString(),
+                                        style: TextStyles.mb14,
                                       ),
-                                    ],
-                                  ),
-                                  subtitle: Text(
-                                    Jiffy(customerlistdata[index]
-                                                ['last_updated_date']
-                                            .toString())
-                                        .fromNow()
-                                        .toString(),
-                                    style: TextStyles.mb12,
-                                  ),
-                                  title: Padding(
-                                    padding: const EdgeInsets.only(bottom: 10),
-                                    child: Text(
-                                      customerlistdata[index]['name'].toString(),
-                                      style: TextStyles.mb14,
                                     ),
                                   ),
-                                
-                                ),
-                              ).paddingSymmetric(horizontal: 15),
-                              SizedBox(
-                                height: 0.2,
-                                child: Divider())
-                            ],
-                          ),
-                        );
-                      }),
-                  SizedBox(height: 40)
-                ],
-              )
-            ],
-          ),
+                                ).paddingSymmetric(horizontal: 15),
+                                SizedBox(height: 0.2, child: Divider())
+                              ],
+                            ),
+                          );
+                        })
+                    : StreamBuilder<QuerySnapshot>(
+                        stream: getcustomerdata(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            final List<DocumentSnapshot> documents =
+                                snapshot.data!.docs;
+                            print("length" + documents.length.toString());
+                            return ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: documents.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  var fname =
+                                      documents[index]['name'].split('');
+                                  return GestureDetector(
+                                    onTap: () async {
+                                      GetStorage()
+                                          .write("searchtxt", serachtext.text);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  Customertransaction(
+                                                      name: documents[index]
+                                                          ['name'],
+                                                      iscustomer: "1",
+                                                      id: documents[index]['id']
+                                                          .toString(),
+                                                      // idlist[index].toString(),
+                                                      mobile_no:
+                                                          documents[index]
+                                                              ['mobile_no'],
+                                                      contact: null,
+                                                      p_image: documents[index]
+                                                          ['p_image'],
+                                                      address: documents[index]
+                                                          ['address'],
+                                                      token: documents[index]
+                                                          ['token'],
+                                                      searchtxt:
+                                                          serachtext.text)));
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Dismissible(
+                                          background: Container(
+                                              alignment: Alignment.centerLeft,
+                                              color: Colors.green,
+                                              child: Icon(
+                                                Icons.call,
+                                                color: Colors.white,
+                                              )),
+                                          key: UniqueKey(),
+                                          onDismissed:
+                                              (DismissDirection direction) {
+                                            if (direction ==
+                                                DismissDirection.endToStart) {
+                                            } else {
+                                              setState(() {
+                                                _callNumber(
+                                                    customerlistdata[index]
+                                                            ['mobile_no']
+                                                        .toString());
+                                              });
+                                            }
+                                          },
+                                          child: ListTile(
+                                            contentPadding: EdgeInsets.zero,
+                                            leading: CircleAvatar(
+                                              backgroundColor: Colors.blueGrey,
+                                              child: documents[index]
+                                                          ['p_image'] ==
+                                                      " "
+                                                  ? Text(
+                                                      fname[0].toString(),
+                                                      style: TextStyles.mb18,
+                                                    )
+                                                  : Container(
+                                                      width: 55,
+                                                      height: 100,
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(50),
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          imageUrl:
+                                                              customerlistdata[
+                                                                      index]
+                                                                  ['p_image'],
+                                                          placeholder: (context,
+                                                                  url) =>
+                                                              CircularProgressIndicator(),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              Icon(Icons.error),
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                            color:
+                                                                Colors.blueGrey,
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          100))),
+                                                    ),
+                                              radius: 30,
+                                            ),
+                                            trailing: Column(
+                                              children: [
+                                                Text(
+                                                  documents[index]
+                                                          ['youllgetamount']
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15),
+                                                ).paddingOnly(bottom: 5),
+                                                Text(
+                                                  "you'll Get",
+                                                  style: TextStyles.withColor(
+                                                      TextStyles.mn14,
+                                                      Colors.red),
+                                                ),
+                                              ],
+                                            ),
+                                            subtitle: Text(
+                                              Jiffy(documents[index]
+                                                          ['last_updated_date']
+                                                      .toString())
+                                                  .fromNow()
+                                                  .toString(),
+                                              style: TextStyles.mb12,
+                                            ),
+                                            title: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 10),
+                                              child: Text(
+                                                documents[index]['name']
+                                                    .toString(),
+                                                style: TextStyles.mb14,
+                                              ),
+                                            ),
+                                          ),
+                                        ).paddingSymmetric(horizontal: 15),
+                                        SizedBox(height: 0.2, child: Divider())
+                                      ],
+                                    ),
+                                  );
+                                });
+                          } else if (snapshot.hasError) {
+                            return Center(child: Text("NO USER FOUND !"));
+                          } else {
+                            return Center(child: Text("NO USER FOUND !"));
+                          }
+                        }),
+                SizedBox(height: 40)
+              ],
+            )
+          ],
         ),
       ),
     );
-  }
-
-  // get_data() {
-  //   FirebaseFirestore.instance
-  //       .collection('customer_record')
-  //       .get()
-  //       .then((QuerySnapshot querySnapshot) {
-  //     querySnapshot.docs.forEach((doc) {
-  //       setState(() {
-  //         data = json.decode(doc.data().toString());
-  //         print("fetch data" + data.toString());
-  //       });
-  //     });
-  //   });
-  // }
-
-  _getEventsFromFirestore() async {
-    customerlistdata.clear();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    idlist.clear();
-    Provider.of<Insetdatamodel>(context, listen: false).gettotal_amount_gave();
-    Provider.of<Insetdatamodel>(context, listen: false).gettotal_amount_got();
-    setState(() {
-      showloading = true;
-    });
-    //.where('admin_id', isEqualTo: prefs.get('admin_id'))
-    FirebaseFirestore.instance
-        .collection('customer_record')
-        .orderBy('last_updated_date', descending: true)
-        .where('deleted', isEqualTo: '0')
-        .get()
-        .then((QueryDocumentSnapshot) async {
-      for (var queryDocumentSnapshot in QueryDocumentSnapshot.docs) {
-        print("id=" + queryDocumentSnapshot.id);
-        idlist.add(queryDocumentSnapshot.id);
-        print("idlkist" + idlist.toString());
-        Map<String, dynamic> fetchdata = queryDocumentSnapshot.data();
-        setState(() {
-          customerlistdata.add(fetchdata);
-        });
-        double youllget =
-            await Provider.of<Insetdatamodel>(context, listen: false)
-                .get_total_Userwillget(queryDocumentSnapshot.id);
-        FirebaseFirestore.instance
-            .collection('customer_record')
-            .doc(queryDocumentSnapshot.id)
-            .update({'youllgetamount': youllget})
-            .then((_) => print('Updated'))
-            .catchError((error) => print('Update failed: $error'));
-        // setState(() {
-        //   customer.text = widget.searchtxt;
-        // });
-
-        // _runFilter(customer.text);
-
-        // setState(() {
-        //   data.add([queryDocumentSnapshot.id, fetchdata]);
-        // });
-        // print("filterdata" + datafilter.toString());
-      }
-      setState(() {
-        showloading = false;
-      });
-      if (GetStorage().read("searchtxt") != null) {
-        setdata();
-      }
-
-      // setState(() {
-      //   data = data.where((element) => element['deleted'] == "0").toList();
-
-      // });
-
-      // print("data fetch" + customerlistdata.toString());
-    });
-    // for (var i = 0; i <= tmplist.length; i++) {
-    //   setState(() {
-    //     data.add(tmplist[i][1]);
-    //   });
-    // }
-  }
-
-  // _get_customer_record(tablename) async {
-  //   DatabaseReference dataf = databaseReference.child(tablename);
-  //   dataf
-  //       .orderByChild('deleted')
-  //       .equalTo('0')
-  //       .once()
-  //       .then((DataSnapshot snapshot) {
-  //     var key = snapshot.key.toString();
-  //     var value = snapshot.value;
-  //     if (value != null) {
-  //       showloading = true;
-  //       for (var value in snapshot.value.values) {
-  //         setState(() {
-  //           data.add(value);
-  //         });
-  //       }
-  //     } else
-  //       print("No Data");
-  //   });
-  // }
-  // _get_entry_record(tablename) async {
-  //   DatabaseReference dataf = databaseReference.child(tablename);
-  //   dataf.once().then((DataSnapshot snapshot) {
-  //     var key = snapshot.key.toString();
-  //     var value = snapshot.value;
-  //     if (value != null) {
-  //       for (var value in snapshot.value.keys) {
-  //         setState(() {
-  //           entry_data.add(value);
-  //         });
-  //       }
-  //       print(" entry key data" + entry_data.toString());
-  //     } else
-  //       print("No Data");
-  //   });
-  // }
-
-  void _runFilter(String enteredKeyword) {
-    var results = [];
-
-    if (enteredKeyword.isEmpty) {
-      _getEventsFromFirestore();
-      GetStorage().erase();
-      // if the search field is empty or only contains white-space, we'll display all users
-    } else {
-      results = customerlistdata
-          .where((user) =>
-              user["name"].toLowerCase().contains(enteredKeyword.toLowerCase()))
-          .toList();
-      // we use the toLowerCase() method to make it case-insensitive
-    }
-    setState(() {
-      customerlistdata = results;
-    });
   }
 
   _callNumber(String phoneNumber) async {
     String number = phoneNumber;
     await FlutterPhoneDirectCaller.callNumber(number);
   }
-
-  //contact permission
-  // _contactsPermissions() async {
-  //   PermissionStatus permission = await Permission.contacts.status;
-  //   if (permission != PermissionStatus.granted &&
-  //       permission != PermissionStatus.denied) {
-  //     Map<Permission, PermissionStatus> permissionStatus =
-  //         await [Permission.contacts].request();
-  //     return permissionStatus[Permission.contacts] ??
-  //         PermissionStatus.undetermined;
-  //   } else {
-  //     return permission;
-  //   }
-  // }
 
   getrole() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -519,8 +511,36 @@ class _CustomerScreenState extends State<CustomerScreen> {
     });
   }
 
-  setdata() {
-    customer.text = GetStorage().read("searchtxt");
-    _runFilter(customer.text);
+  Stream<QuerySnapshot> getcustomerdata() {
+    return FirebaseFirestore.instance
+        .collection('customer_record')
+        .orderBy('last_updated_date', descending: true)
+        .where('deleted', isEqualTo: '0')
+        .snapshots();
+  }
+
+  var seachresult = [];
+  searchedcustomertest(searchtext) async {
+    var serachlist = [];
+
+    await FirebaseFirestore.instance
+        .collection('customer_record')
+        .orderBy('last_updated_date', descending: true)
+        .where('deleted', isEqualTo: '0')
+        .get()
+        .then((QueryDocumentSnapshot) {
+      for (var value in QueryDocumentSnapshot.docs) {
+        Map<String, dynamic> fetchdata = value.data();
+        serachlist.add(fetchdata);
+      }
+    });
+    setState(() {
+      seachresult = serachlist
+          .where((user) =>
+              user["name"].toLowerCase().contains(searchtext.toLowerCase()))
+          .toList();
+    });
+    print("result data" + seachresult.length.toString());
+    return seachresult;
   }
 }

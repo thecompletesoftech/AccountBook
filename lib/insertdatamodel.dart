@@ -1,25 +1,18 @@
-import 'dart:ffi';
-import 'dart:io';
 import 'package:account_book/Constant/navigaotors/Navagate_Next.dart';
 import 'package:account_book/screens/customertransactions.dart';
-import 'package:account_book/screens/homescreen.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:email_validator/email_validator.dart';
-import 'package:firebase_database/firebase_database.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class Insetdatamodel with ChangeNotifier {
-  final databaseReference = FirebaseDatabase.instance.reference();
   double? total_amount_gave = 0.0;
   double? total_amount_got = 0.0;
   List data = [];
   List got_data = [];
-
   double? t_amt = 0;
-
   var businessname = 'My business';
 
   insertdata(
@@ -125,23 +118,12 @@ class Insetdatamodel with ChangeNotifier {
     notifyListeners();
   }
 
-  // _textMe(number, msg) async {
-  //   if (Platform.isAndroid) {
-  //     var uri = 'sms:$number?body=$msg';
-  //     await launch(uri);
-  //   } else if (Platform.isIOS) {
-  //     // iOS
-  //     var uri = 'sms:00$number&body=hello%20there';
-  //     await launch(uri);
-  //   }
-  // }
-
-  gettotal_amount_gave() {
+  Future<double> gettotal_amount_gave() async {
     var finaldata_gave = [];
     data.clear();
-    total_amount_gave = 0;
+    double total_amount_gave = 0;
 
-    FirebaseFirestore.instance
+    return await FirebaseFirestore.instance
         .collection('Entry')
         .where('deleted_status', isEqualTo: "0")
         .where('type', isEqualTo: "0")
@@ -160,37 +142,9 @@ class Insetdatamodel with ChangeNotifier {
         print('total gave' + total_amount_gave.toString());
       }
       print('total gave' + total_amount_gave.toString());
-
-      notifyListeners();
+      return total_amount_gave;
+      // notifyListeners();
     });
-
-    // DatabaseReference dataf = databaseReference.child('Entry');
-
-    // dataf.once().then((DataSnapshot snapshot) {
-    //   var key = snapshot.key.toString();
-    //   var value = snapshot.value;
-    //   if (value != null) {
-    //     total_amount_gave = 0;
-    //     finaldata_gave.clear();
-    //     for (var value in snapshot.value.values) {
-    //       data.add(value);
-    //     }
-
-    //     finaldata_gave = data
-    //         .where((element) =>
-    //             element['deleted_status'] == '0' && element['type'] == "0")
-    //         .toList();
-
-    //     for (int i = 0; i <= finaldata_gave.length; i++) {
-    //       total_amount_gave =
-    //           double.parse(finaldata_gave[i]['amount']) + total_amount_gave!;
-    //       iddata.add(data[i]['contact_id']);
-    //     }
-
-    //     notifyListeners();
-    //   } else
-    //     print("No Data");
-    // });
   }
 
   gettotal_amount_gaveByuserid(userid) async {
@@ -221,16 +175,13 @@ class Insetdatamodel with ChangeNotifier {
     return total_amount_gave;
   }
 
-  gettotal_amount_got() {
+  Future<double> gettotal_amount_got() async {
     var finaldata_Got = [];
-
     got_data.clear();
-
     finaldata_Got.clear();
+    double total_amount_got = 0;
 
-    total_amount_got = 0;
-
-    FirebaseFirestore.instance
+    return await FirebaseFirestore.instance
         .collection('Entry')
         .where('deleted_status', isEqualTo: "0")
         .where('type', isEqualTo: "1")
@@ -246,42 +197,12 @@ class Insetdatamodel with ChangeNotifier {
 
       for (int i = 0; i < finaldata_Got.length; i++) {
         total_amount_got =
-            double.parse(finaldata_Got[i]['amount']) + total_amount_got!;
+            double.parse(finaldata_Got[i]['amount']) + total_amount_got;
       }
       print('total got' + total_amount_got.toString());
-      notifyListeners();
+      return total_amount_got;
+      // notifyListeners();
     });
-
-    // DatabaseReference dataf = databaseReference.child('Entry');
-    // dataf.once().then((DataSnapshot snapshot) {
-    //   var key = snapshot.key.toString();
-    //   var value = snapshot.value;
-
-    //   if (value != null) {
-    //     total_amount_got = 0;
-
-    //     for (var value in snapshot.value.values) {
-    //       got_data.add(value);
-    //     }
-
-    //     finaldata_Got = got_data
-    //         .where((element) =>
-    //             element['deleted_status'] == '0' && (element['type'] == "1"))
-    //         .toList();
-
-    //     print(finaldata_Got.length);
-
-    //     print("finaldatagot" + finaldata_Got.toString());
-
-    //     for (int i = 0; i <= finaldata_Got.length; i++) {
-    //       total_amount_got =
-    //           double.parse(finaldata_Got[i]['amount']) + total_amount_got!;
-    //     }
-    //     print('total got' + total_amount_got.toString());
-    //     notifyListeners();
-    //   } else
-    //     print("No Data");
-    // });
   }
 
   gettotal_amount_gotbyuserid(userid) async {
@@ -310,10 +231,8 @@ class Insetdatamodel with ChangeNotifier {
       }
       print('total got' + total_amount_got.toString());
       notifyListeners();
-    
     });
-  return total_amount_got;
-  
+    return total_amount_got;
   }
 
   get_total_Userwillget(userid) async {
@@ -452,5 +371,16 @@ class Insetdatamodel with ChangeNotifier {
   clearamount() {
     total_amount_gave = 0;
     total_amount_got = 0;
+  }
+
+  updatecustomertable({collectionname, id, jsondata}) {
+    try {
+      FirebaseFirestore.instance
+          .collection(collectionname)
+          .doc(id)
+          .update(jsondata);
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

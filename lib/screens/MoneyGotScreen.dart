@@ -215,43 +215,6 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
                             },
                           ),
                         ),
-
-                        // GestureDetector(
-                        //   onTap: () async {
-                        //     datepicker();
-                        //   },
-                        //   child: Container(
-                        //     padding: EdgeInsets.all(10),
-                        //     decoration: BoxDecoration(
-                        //       color: Colors.blueGrey,
-                        //       borderRadius:
-                        //           BorderRadius.all(Radius.circular(10)),
-                        //     ),
-                        //     height: size.height * 0.04,
-                        //     child: Row(
-                        //       children: [
-                        //         Icon(
-                        //           Icons.date_range_outlined,
-                        //           color: Color.fromARGB(255, 109, 240, 76),
-                        //         ),
-                        //         SizedBox(
-                        //           width: 5,
-                        //         ),
-                        //         dateinput.text == ""
-                        //             ? Text(
-                        //                 DateFormat('MM-dd-yyyy HH:mm')
-                        //                     .format(DateTime.now())
-                        //                     .toString(),
-                        //                 style: TextStyles.withColor(
-                        //                     TextStyles.mn14, Colors.white))
-                        //             : Text(dateinput.text.toString(),
-                        //                 style: TextStyles.withColor(
-                        //                     TextStyles.mn14, Colors.white)),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
-
                         GestureDetector(
                           onTap: () {
                             print("hii");
@@ -298,47 +261,22 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
                 validation = 'please enter values';
               });
             } else {
-              final users = FirebaseFirestore.instance.collection("Entry");
               if (widget.amount != null) {
-                print("update entry block run....");
-                users.doc(widget.entry_id).update({
-                  'amount': amount.text,
-                  'description': description.text,
-                  'date': dateinput.text.isEmpty
-                              ? DateFormat('yyyy-MM-dd').format(DateTime.now()).toString()
-                              : dateinput.text,
-                }).then((value) {
-                  print("entry updated");
-
-                  nextScreen(
-                      context,
-                      Customertransaction(
-                          p_image: widget.p_image == " " ? " " : widget.p_image,
-                          // p_image: widget.p_image == ' ' ? " " : widget.p_image,
-                          name: widget.name,
-                          id: widget.u_id));
-                }).catchError(
-                    (error) => print("Failed to update user: $error"));
-
-                final user =
-                    FirebaseFirestore.instance.collection('customer_record');
-                user
-                    .doc(widget.u_id)
-                    .update({
-                      'last_updated_date': dateinput.text.isEmpty
-                          ? dateinput.text = DateFormat('yyyy-MM-dd HH:mm')
-                              .format(DateTime.now())
-                              .toString()
-                          : dateinput.text
-                    })
-                    .then((value) => print("date updated"))
-                    .catchError(
-                        (error) => print("Failed to update user: $error"));
+                //  update entry
+                await update_entry();
+                updatecustomerlastupdate_youwillget();
+                nextScreen(
+                    context,
+                    Customertransaction(
+                        p_image: widget.p_image == " " ? " " : widget.p_image,
+                        name: widget.name,
+                        id: widget.u_id));
               } else {
                 if (widget.iscustomer == "0") {
+                  //  is customer 0 = new customer
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
-                  Provider.of<Insetdatamodel>(context, listen: false)
+                  await Provider.of<Insetdatamodel>(context, listen: false)
                       .insertdata(
                           role == "collector"
                               ? prefs.getString('login_person_id')
@@ -360,31 +298,13 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
                           " ",
                           context,
                           widget.token);
-                  Api()
-                      .apicall_post(
-                          "https://fcm.googleapis.com/fcm/send",
-                          {
-                            "to": widget.token,
-                            "notification": {
-                              "body": "successfully you got ${amount.text} ",
-                              "title": "${amount.text} got you"
-                            }
-                          },
-                          context)
-                      .then((value) {
-                    print("data" + value['results']);
-                  });
-                  // nextScreen(
-                  //     context,
-                  //     Customertransaction(
-                  //         p_image: widget.p_image == ' ' ? " " : widget.p_image,
-                  //         name: widget.name,
-                  //         id: widget.u_id,
-                  //         token: widget.token));
+                  updatetotaluserwillget();
+                  sendnotification();
                 } else {
+                  //  is customer 0 = exits customer
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
-                  Provider.of<Insetdatamodel>(context, listen: false)
+                  await Provider.of<Insetdatamodel>(context, listen: false)
                       .insertentry(
                           role == "collector"
                               ? prefs.getString('login_person_id')
@@ -405,27 +325,8 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
                           widget.mobile_no,
                           imageFile == null ? ' ' : imageFile!.path,
                           widget.token);
-                  Api()
-                      .apicall_post(
-                          "https://fcm.googleapis.com/fcm/send",
-                          {
-                            "to": widget.token,
-                            "notification": {
-                              "body": "successfully you give ${amount.text} ",
-                              "title": "${amount.text} you Give "
-                            }
-                          },
-                          context)
-                      .then((value) {
-                    print("data" + value['results']);
-                  });
-                  // nextScreen(
-                  //     context,
-                  //     Customertransaction(
-                  //         p_image: widget.p_image == ' ' ? " " : widget.p_image,
-                  //         name: widget.name,
-                  //         id: widget.u_id,
-                  //         token:widget.token));
+                  updatetotaluserwillget();
+                  sendnotification();
                 }
               }
             }
@@ -436,10 +337,6 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
           ),
           focusColor: Colors.red,
           backgroundColor: Colors.red,
-          // child: Container(
-          //     height: size.height * 0.02,
-          //     width: size.width,
-          //     child: Text("Save")),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
@@ -483,19 +380,6 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
     }
   }
 
-  _getFromCamera() async {
-    final XFile = await ImagePicker().getImage(
-      source: ImageSource.camera,
-      maxWidth: 1800,
-      maxHeight: 1800,
-    );
-    if (XFile != null) {
-      setState(() {
-        imageFile = File(XFile.path);
-      });
-    }
-  }
-
   getrole() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -503,20 +387,65 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
     });
   }
 
-  // printFirebase(tablename) async {
-  //   DatabaseReference dataf = databaseReference.child(tablename);
-  //   dataf.once().then((DataSnapshot snapshot) {
-  //     var key = snapshot.key.toString();
-  //     var value = snapshot.value;
-  //     if (value != null) {
-  //       for (var value in snapshot.value.values) {
-  //         setState(() {
-  //           customerdata.add(value);
-  //         });
-  //       }
-  //     } else
-  //       print("No Data");
-  //   });
-  // }
+  sendnotification() {
+    try {
+      Api()
+          .apicall_post(
+              "https://fcm.googleapis.com/fcm/send",
+              {
+                "to": widget.token,
+                "notification": {
+                  "body": "successfully you give ${amount.text} ",
+                  "title": "${amount.text} you Give "
+                }
+              },
+              context)
+          .then((value) {});
+    } catch (e) {
+      print("error" + e.toString());
+    }
+  }
 
+  updatetotaluserwillget() async {
+    double userwillget =
+        await Provider.of<Insetdatamodel>(context, listen: false)
+            .get_total_Userwillget(widget.u_id);
+    await Provider.of<Insetdatamodel>(context, listen: false)
+        .updatecustomertable(
+            collectionname: "customer_record",
+            id: widget.u_id,
+            jsondata: {"youllgetamount": userwillget});
+  }
+
+  updatecustomerlastupdate_youwillget() async {
+    double userwillget =
+        await Provider.of<Insetdatamodel>(context, listen: false)
+            .get_total_Userwillget(widget.u_id);
+    await Provider.of<Insetdatamodel>(context, listen: false)
+        .updatecustomertable(
+            collectionname: "customer_record",
+            id: widget.u_id,
+            jsondata: {
+          "youllgetamount": userwillget,
+          'last_updated_date': dateinput.text.isEmpty
+              ? dateinput.text = DateFormat('yyyy-MM-dd HH:mm')
+                  .format(DateTime.now())
+                  .toString()
+              : dateinput.text
+        });
+  }
+
+  update_entry() async {
+    await Provider.of<Insetdatamodel>(context, listen: false)
+        .updatecustomertable(
+            collectionname: "Entry",
+            id: widget.entry_id,
+            jsondata: {
+          'amount': amount.text,
+          'description': description.text,
+          'date': dateinput.text.isEmpty
+              ? DateFormat('yyyy-MM-dd').format(DateTime.now()).toString()
+              : dateinput.text,
+        });
+  }
 }

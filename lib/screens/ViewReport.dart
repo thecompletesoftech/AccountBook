@@ -8,6 +8,7 @@ import 'package:excel/excel.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -140,166 +141,161 @@ class _ViewReportState extends State<ViewReport> {
               ],
             ),
             preferredSize: Size.fromHeight(80)),
-        body: Container(
-          padding: EdgeInsets.all(15),
-          child: SingleChildScrollView(
-            child: Column(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Net Balance",
-                    style: TextStyles.mb16,
-                  ),
-                  Text(
-                    '\u{20B9}' + total.toString(),
-                    style: TextStyles.withColor(TextStyles.mb14, Colors.red),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Row(
+        body: Column(children: [
+
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Net Balance",
+                  style: TextStyles.mb20,
+                ),
+                Text(
+                  '\u{20B9}' + total.toString(),
+                  style: TextStyles.withColor(TextStyles.mb20, Colors.red),
+                )
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "TOTAL",
+                  style: TextStyles.mb12,
+                ),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "TOTAL",
-                      style: TextStyles.mb12,
+                      "YOU GAVE " + "\u{20B9}",
+                      style:
+                          TextStyles.withColor(TextStyles.mb12, Colors.red),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "YOU GAVE " + "\u{20B9}",
-                          style:
-                              TextStyles.withColor(TextStyles.mb12, Colors.red),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          "YOU GOT " + "\u{20B9}",
-                          style: TextStyles.withColor(
-                              TextStyles.mb12, Colors.green),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: size.width * 0.3,
-                      child: Text(
-                        entry_data.length.toString(),
-                        style: TextStyles.mb12,
-                      ),
+                    SizedBox(
+                      width: 8,
                     ),
-                    Container(
-                      width: size.width * 0.4,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            totalgaveamount.toString(),
-                            style: TextStyles.withColor(
-                                TextStyles.mb12, Colors.red),
-                          ),
-                          Text(
-                            totalgotamount.toString(),
-                            style: TextStyles.withColor(
-                                TextStyles.mb12, Colors.green),
-                          ),
-                        ],
-                      ),
-                    )
+                    Text(
+                      "YOU GOT " + "\u{20B9}",
+                      style: TextStyles.withColor(
+                          TextStyles.mb12, Colors.green),
+                    ),
                   ],
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              if (showloading == true)
-                Center(child: CircularProgressIndicator()),
-              if (entry_data.length == 0 && showloading == false)
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Center(
-                      child: Text(
-                    "NO DATA FOUND",
-                    style: TextStyles.mb14,
-                  )),
-                ),
-              SingleChildScrollView(
-                child: Container(
-                  height: size.height * 0.65,
-                  child: ListView.builder(
-                      itemCount: entry_data.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Card(
-                          child: Container(
-                            padding: EdgeInsets.all(15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                        width: size.width * 0.3,
-                                        child: Text(
-                                          entry_data[index]['name'].toString(),
-                                          maxLines: 2,
-                                          style: TextStyles.mb14,
-                                        )),
-                                    SizedBox(height: 10),
-                                    Container(
-                                        child: Text(
-                                      entry_data[index]['date'],
-                                      maxLines: 2,
-                                      style: TextStyles.mn12,
-                                    )),
-                                  ],
-                                ),
-                                entry_data[index]['type'] == '0'
-                                    ? Text(
-                                        entry_data[index]['amount'].toString(),
-                                        style: TextStyles.withColor(
-                                            TextStyles.mb12, Colors.red),
-                                      )
-                                    : Container(),
-                                entry_data[index]['type'] == '1'
-                                    ? Text(
-                                        entry_data[index]['amount'].toString(),
-                                        style: TextStyles.withColor(
-                                            TextStyles.mb12, Colors.green),
-                                      )
-                                    : Container()
-                              ],
-                            ),
-                          ),
-                        );
-                      }),
-                ),
-              ),
-            ]),
+                )
+              ],
+            ),
           ),
-        ),
-        // floatingActionButton: FloatingActionButton.extended(
-        //   onPressed: () {
-        //     createexcel();
-        //   },
-        //   label: Text('Create excel File'.toString()),
-        //   backgroundColor: Colors.green,
-        // ),
+          // SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: size.width * 0.3,
+                  child: Text(
+                    entry_data.length.toString(),
+                    style: TextStyles.mb12,
+                  ),
+                ),
+                Container(
+                  width: size.width * 0.4,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        totalgaveamount.toString(),
+                        style: TextStyles.withColor(
+                            TextStyles.mb12, Colors.red),
+                      ),
+                      Text(
+                        totalgotamount.toString(),
+                        style: TextStyles.withColor(
+                            TextStyles.mb12, Colors.green),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          
+          if (showloading == true)
+            Center(child: CircularProgressIndicator()),
+          if (entry_data.length == 0 && showloading == false)
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Center(
+                  child: Text(
+                "NO DATA FOUND",
+                style: TextStyles.mb14,
+              )),
+            ),
+            Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+                itemCount: entry_data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                  width: size.width * 0.3,
+                                  child: Text(
+                                    
+                                    entry_data[index]['name'].toString(),
+                                    maxLines: 2,
+                                    style: TextStyles.mb14,
+                                  )),
+                              SizedBox(height: 10),
+                              Container(
+                                  child: Text(
+                                    DateFormat('dd-MM-yyyy').format(
+                                              DateTime.parse(
+                                entry_data[index]['date'].toString())),
+                                maxLines: 2,
+                                style: TextStyles.mn12,
+                              )),
+                            ],
+                          ),
+                          entry_data[index]['type'] == '0'
+                              ? Text(
+                                  entry_data[index]['amount'].toString(),
+                                  style: TextStyles.withColor(
+                                      TextStyles.mb12, Colors.red),
+                                )
+                              : Container(),
+                          entry_data[index]['type'] == '1'
+                              ? Text(
+                                  entry_data[index]['amount'].toString(),
+                                  style: TextStyles.withColor(
+                                      TextStyles.mb12, Colors.green),
+                                )
+                              : Container()
+                        ],
+                      ).paddingSymmetric(horizontal: 10),
+                      
+                      Divider()
+                    ],
+                  );
+                }),
+          ),
+        ]),
       ),
     );
   }

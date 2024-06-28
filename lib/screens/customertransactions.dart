@@ -49,11 +49,9 @@ class Customertransaction extends StatefulWidget {
 
 class _CustomertransactionState extends State<Customertransaction> {
   var entry_data = [];
-
   double total_amount_gave = 0;
   double total_amount_got = 0;
   double total_amount = 0;
-
   List datelist = [];
   DateTime? startdate;
   DateTime? enddate;
@@ -65,6 +63,7 @@ class _CustomertransactionState extends State<Customertransaction> {
   bool showloading = false;
   List got = [];
   List filter_data = [];
+
   DateTime _currentDate = DateTime(DateTime.now().year.toInt(),
       DateTime.now().month.toInt(), DateTime.now().day.toInt());
 
@@ -556,8 +555,11 @@ class _CustomertransactionState extends State<Customertransaction> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                entry_data[index]['date']
-                                                    .toString(),
+                                                DateFormat('dd-MM-yyyy').format(
+                                                    DateTime.parse(
+                                                        entry_data[index]
+                                                                ['date']
+                                                            .toString())),
                                                 maxLines: 2,
                                                 style: TextStyles.mn12,
                                               ),
@@ -655,9 +657,8 @@ class _CustomertransactionState extends State<Customertransaction> {
                       ),
                 GestureDetector(
                     onTap: (() {
-                      Navigator.pop(context,total_amount);
-                      // nextScreen(
-                      //     context, HomeScreen(searchtxt: widget.searchtxt));
+                      nextScreen(
+                          context, HomeScreen(searchtxt: widget.searchtxt));
                     }),
                     child: Container(
                         width: 50,
@@ -1194,7 +1195,8 @@ class _CustomertransactionState extends State<Customertransaction> {
             print("hii");
           } else
             for (var i = 0; i < fetchdata_got.length; i++) {
-              print("amount fetch amount"+ fetchdata_got[i]['amount'].toString());
+              print("amount fetch amount" +
+                  fetchdata_got[i]['amount'].toString());
               setState(() {
                 total_amount_got =
                     double.parse(fetchdata_got[i]['amount']) + total_amount_got;

@@ -311,41 +311,9 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
               });
             } else {
               final users = FirebaseFirestore.instance.collection("Entry");
-
               if (widget.amount != null) {
-                users.doc(widget.entry_id).update({
-                  'amount': amount.text,
-                  'description': description.text,
-                  'date': dateinput.text.isEmpty
-                              ? DateFormat('yyyy-MM-dd').format(DateTime.now()).toString()
-                              : dateinput.text,
-                }).then((value) {
-                  print("entry updated");
-
-                  // nextScreen(
-                  //     context,
-                  //     Customertransaction(
-                  //       p_image: " ",
-                  //       name: widget.name,
-                  //     ));
-                }).catchError(
-                    (error) => print("Failed to update user: $error"));
-
-                final user =
-                    FirebaseFirestore.instance.collection('customer_record');
-                user
-                    .doc(widget.u_id)
-                    .update({
-                      'last_updated_date': dateinput.text.isEmpty
-                          ? dateinput.text = DateFormat('yyyy-MM-dd HH:mm')
-                              .format(DateTime.now())
-                              .toString()
-                          : dateinput.text
-                    })
-                    .then((value) => print("date updated"))
-                    .catchError(
-                        (error) => print("Failed to update user: $error"));
-
+                await update_entry();
+                updatecustomerlastupdate_youwillget();
                 nextScreen(
                     context,
                     Customertransaction(
@@ -357,12 +325,11 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
                 print(DateTime.now().toString());
                 DateTime dt = DateTime.now();
                 var datetime = DateFormat('yyyy-MM-dd').format(dt);
-                print("datetime" + datetime.toString());
 
                 if (widget.iscustomer == "0") {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
-                  Provider.of<Insetdatamodel>(context, listen: false)
+                  await Provider.of<Insetdatamodel>(context, listen: false)
                       .insertdata(
                           role == "collector"
                               ? prefs.getString('login_person_id')
@@ -383,32 +350,12 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
                           " ",
                           context,
                           widget.token);
-                  // print(" u..id" + widget.u_id.toString());
-                  Api()
-                      .apicall_post(
-                          "https://fcm.googleapis.com/fcm/send",
-                          {
-                            "to": widget.token,
-                            "notification": {
-                              "body": "please return amount in return date",
-                              "title": "${amount.text} give you"
-                            }
-                          },
-                          context)
-                      .then((value) {
-                    print("data" + value['results']);
-                  });
-                  // nextScreen(
-                  //     context,
-                  //     Customertransaction(
-                  //         p_image: widget.p_image == ' ' ? " " : widget.p_image,
-                  //         name: widget.name,
-                  //         id: widget.u_id,
-                  //         token: widget.token));
+                  updatetotaluserwillget();
+                  sendnotification();
                 } else {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
-                  Provider.of<Insetdatamodel>(context, listen: false)
+                  await Provider.of<Insetdatamodel>(context, listen: false)
                       .insertentry(
                           role == "collector"
                               ? prefs.getString('login_person_id')
@@ -428,27 +375,8 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
                           widget.mobile_no,
                           imageFile == null ? ' ' : imageFile!.path,
                           widget.token);
-                  Api()
-                      .apicall_post(
-                          "https://fcm.googleapis.com/fcm/send",
-                          {
-                            "to": widget.token,
-                            "notification": {
-                              "body": "please return amount in return date",
-                              "title": "${amount.text} you Got"
-                            }
-                          },
-                          context)
-                      .then((value) {
-                    print("data" + value['results']);
-                  });
-                  // nextScreen(
-                  //     context,
-                  //     Customertransaction(
-                  //         p_image: widget.p_image == ' ' ? " " : widget.p_image,
-                  //         name: widget.name,
-                  //         id: widget.u_id,
-                  //         token: widget.token));
+                  sendnotification();
+                  updatetotaluserwillget();
                 }
               }
             }
@@ -459,10 +387,6 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
           ),
           focusColor: Colors.red,
           backgroundColor: Colors.red,
-          // child: Container(
-          //     height: size.height * 0.02,
-          //     width: size.width,
-          //     child: Text("Save")),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
@@ -474,27 +398,6 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
     setState(() {
       role = prefs.getString('role')!;
     });
-  }
-
-  datepicker() async {
-    // DateTime? pickedDate = await showDatePicker(
-    //     context: context,
-    //     initialDate: DateTime.now(),
-    //     firstDate: DateTime(
-    //         2000), //DateTime.now() - not to allow to choose before today.
-    //     lastDate: DateTime(2101));
-    // if (pickedDate != null) {
-    //   print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-    //   String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-    //   print(
-    //       formattedDate); //formatted date output using intl package =>  2021-03-16
-    //   //you can implement different kind of Date Format here according to your requirement
-    //   setState(() {
-    //     dateinput.text = formattedDate; //set output date to TextField value.
-    //   });
-    // } else {
-    //   print("date is no selected");
-    // }
   }
 
   _getFromGallery() async {
@@ -511,16 +414,66 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
     }
   }
 
-  _getFromCamera() async {
-    final XFile = await ImagePicker().pickImage(
-      source: ImageSource.camera,
-      maxWidth: 1800,
-      maxHeight: 1800,
-    );
-    if (XFile != null) {
-      setState(() {
-        imageFile = File(XFile.path);
-      });
+  sendnotification() {
+    try {
+      Api()
+          .apicall_post(
+              "https://fcm.googleapis.com/fcm/send",
+              {
+                "to": widget.token,
+                "notification": {
+                  "body": "please return amount in return date",
+                  "title": "${amount.text} you Got"
+                }
+              },
+              context)
+          .then((value) {});
+    } catch (e) {
+      print("error" + e.toString());
     }
   }
+
+  updatetotaluserwillget() async {
+    double userwillget =
+        await Provider.of<Insetdatamodel>(context, listen: false)
+            .get_total_Userwillget(widget.u_id);
+    await Provider.of<Insetdatamodel>(context, listen: false)
+        .updatecustomertable(
+            collectionname: "customer_record",
+            id: widget.u_id,
+            jsondata: {"youllgetamount": userwillget});
+  }
+
+  updatecustomerlastupdate_youwillget() async {
+    double userwillget =
+        await Provider.of<Insetdatamodel>(context, listen: false)
+            .get_total_Userwillget(widget.u_id);
+    await Provider.of<Insetdatamodel>(context, listen: false)
+        .updatecustomertable(
+            collectionname: "customer_record",
+            id: widget.u_id,
+            jsondata: {
+          "youllgetamount": userwillget,
+          'last_updated_date': dateinput.text.isEmpty
+              ? dateinput.text = DateFormat('yyyy-MM-dd HH:mm')
+                  .format(DateTime.now())
+                  .toString()
+              : dateinput.text
+        });
+  }
+
+  update_entry() async {
+    await Provider.of<Insetdatamodel>(context, listen: false)
+        .updatecustomertable(
+            collectionname: "Entry",
+            id: widget.entry_id,
+            jsondata: {
+          'amount': amount.text,
+          'description': description.text,
+          'date': dateinput.text.isEmpty
+              ? DateFormat('yyyy-MM-dd').format(DateTime.now()).toString()
+              : dateinput.text,
+        });
+  }
+
 }
