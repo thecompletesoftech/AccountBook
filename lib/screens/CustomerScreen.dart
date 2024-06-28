@@ -66,7 +66,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                     FutureBuilder<double>(
                                       future: Provider.of<Insetdatamodel>(
                                               context)
-                                          .gettotal_amount_gave(), // function where you call your api
+                                          .netamount(), // function where you call your api
                                       builder: (BuildContext context,
                                           AsyncSnapshot<double> snapshot) {
                                         // AsyncSnapshot<Your object type>

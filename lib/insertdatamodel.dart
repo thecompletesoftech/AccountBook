@@ -146,6 +146,9 @@ class Insetdatamodel with ChangeNotifier {
       // notifyListeners();
     });
   }
+  Future<double> netamount() async{
+    return await gettotal_amount_gave() - await gettotal_amount_got();
+  }
 
   gettotal_amount_gaveByuserid(userid) async {
     var finaldata_gave = [];
