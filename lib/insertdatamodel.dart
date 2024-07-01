@@ -46,7 +46,8 @@ class Insetdatamodel with ChangeNotifier {
       "address": address,
       "last_updated_date": date,
       "password": "123456",
-      "token": " "
+      "token": " ",
+      "youllgetamount": " "
     }).then((value) {
       upadtedocId(value.id, "customer_record");
       insertentry(Collector_id, name, status_collector, des, amount, date,
@@ -146,6 +147,7 @@ class Insetdatamodel with ChangeNotifier {
       // notifyListeners();
     });
   }
+
   Future<double> netamount() async{
     return await gettotal_amount_gave() - await gettotal_amount_got();
   }

@@ -246,7 +246,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                         DismissDirection.endToStart) {
                                     } else {
                                       setState(() {
-                                        _callNumber(customerlistdata[index]
+                                        _callNumber(seachresult[index]
                                                 ['mobile_no']
                                             .toString());
                                       });
@@ -270,7 +270,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                                     BorderRadius.circular(50),
                                                 child: CachedNetworkImage(
                                                   imageUrl:
-                                                      customerlistdata[index]
+                                                      seachresult[index]
                                                           ['p_image'],
                                                   placeholder: (context, url) =>
                                                       CircularProgressIndicator(),
@@ -390,7 +390,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                             } else {
                                               setState(() {
                                                 _callNumber(
-                                                    customerlistdata[index]
+                                                    documents[index]
                                                             ['mobile_no']
                                                         .toString());
                                               });
@@ -417,9 +417,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                                         child:
                                                             CachedNetworkImage(
                                                           imageUrl:
-                                                              customerlistdata[
-                                                                      index]
-                                                                  ['p_image'],
+                                                              documents[index]
+                                                                  ['p_image'].toString(),
                                                           placeholder: (context,
                                                                   url) =>
                                                               CircularProgressIndicator(),
