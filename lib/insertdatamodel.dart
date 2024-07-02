@@ -46,7 +46,7 @@ class Insetdatamodel with ChangeNotifier {
       "address": address,
       "last_updated_date": date,
       "password": "123456",
-      "token": " ",
+      "token": "0",
       "youllgetamount": " "
     }).then((value) {
       upadtedocId(value.id, "customer_record");

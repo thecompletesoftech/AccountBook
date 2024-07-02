@@ -1,10 +1,7 @@
 import 'package:account_book/Constant/navigaotors/Navagate_Next.dart';
-import 'package:account_book/screens/CustomerScreen.dart';
-import 'package:account_book/screens/Customer_profile.dart';
 import 'package:account_book/screens/homescreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import '../Constant/TextStyles/Textstyles.dart';
 
 class Update_name extends StatefulWidget {
@@ -18,6 +15,7 @@ class Update_name extends StatefulWidget {
 
 class _Update_addressState extends State<Update_name> {
   TextEditingController name = TextEditingController();
+  
   @override
   void initState() {
     name.text = widget.name;
