@@ -254,97 +254,87 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
             ],
           ),
         ),
-        floatingActionButton: new FloatingActionButton.extended(
+        floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
-            setState(() {
-              isloading = true;
-            });
-
-            if (isloading == false) {
-              if (amount.text.isEmpty) {
-                setState(() {
-                  valid = true;
-                  validation = 'please enter values';
-                });
+            if (amount.text.isEmpty) {
+              setState(() {
+                valid = true;
+                validation = 'please enter values';
+              });
+            } else {
+              if (widget.amount != null) {
+                //  update entry
+                await update_entry();
+                await updatecustomerlastupdate_youwillget();
+                nextScreen(
+                    context,
+                    Customertransaction(
+                        p_image: widget.p_image == " " ? " " : widget.p_image,
+                        name: widget.name,
+                        id: widget.u_id));
               } else {
-                if (widget.amount != null) {
-                  //  update entry
-                  await update_entry();
-                  await updatecustomerlastupdate_youwillget();
-                  nextScreen(
-                      context,
-                      Customertransaction(
-                          p_image: widget.p_image == " " ? " " : widget.p_image,
-                          name: widget.name,
-                          id: widget.u_id));
+                if (widget.iscustomer == "0") {
+                  //  is customer 0 = new customer
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  await Provider.of<Insetdatamodel>(context, listen: false)
+                      .insertdata(
+                          role == "collector"
+                              ? prefs.getString('login_person_id')
+                              : null,
+                          widget.name,
+                          role == "collector" ? "0" : "1",
+                          widget.mobile_no,
+                          description.text.isEmpty ? ' ' : description.text,
+                          dateinput.text.isEmpty
+                              ? dateinput.text = DateFormat('yyyy-MM-dd')
+                                  .format(DateTime.now())
+                              : dateinput.text,
+                          '0',
+                          amount.text,
+                          imageFile == null ? ' ' : imageFile!.path,
+                          "1",
+                          "0",
+                          " ",
+                          " ",
+                          context,
+                          widget.token);
+                  await updatetotaluserwillget();
+                  await sendnotification();
                 } else {
-                  if (widget.iscustomer == "0") {
-                    //  is customer 0 = new customer
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    await Provider.of<Insetdatamodel>(context, listen: false)
-                        .insertdata(
-                            role == "collector"
-                                ? prefs.getString('login_person_id')
-                                : null,
-                            widget.name,
-                            role == "collector" ? "0" : "1",
-                            widget.mobile_no,
-                            description.text.isEmpty ? ' ' : description.text,
-                            dateinput.text.isEmpty
-                                ? dateinput.text = DateFormat('yyyy-MM-dd')
-                                    .format(DateTime.now())
-                                : dateinput.text,
-                            '0',
-                            amount.text,
-                            imageFile == null ? ' ' : imageFile!.path,
-                            "1",
-                            "0",
-                            " ",
-                            " ",
-                            context,
-                            widget.token);
-                    await updatetotaluserwillget();
-                    await sendnotification();
-                  } else {
-                    //  is customer 0 = exits customer
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    await Provider.of<Insetdatamodel>(context, listen: false)
-                        .insertentry(
-                            role == "collector"
-                                ? prefs.getString('login_person_id')
-                                : null,
-                            widget.name,
-                            role == "collector" ? "0" : "1",
-                            description.text.isEmpty ? ' ' : description.text,
-                            amount.text,
-                            dateinput.text.isEmpty
-                                ? dateinput.text = DateFormat('yyyy-MM-dd')
-                                    .format(DateTime.now())
-                                : dateinput.text,
-                            imageFile == null ? ' ' : imageFile!.path,
-                            "1",
-                            widget.u_id,
-                            "0",
-                            context,
-                            widget.mobile_no,
-                            imageFile == null ? ' ' : imageFile!.path,
-                            widget.token);
-                    updatetotaluserwillget();
-                    sendnotification();
-                  }
+                  //  is customer 0 = exits customer
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  await Provider.of<Insetdatamodel>(context, listen: false)
+                      .insertentry(
+                          role == "collector"
+                              ? prefs.getString('login_person_id')
+                              : null,
+                          widget.name,
+                          role == "collector" ? "0" : "1",
+                          description.text.isEmpty ? ' ' : description.text,
+                          amount.text,
+                          dateinput.text.isEmpty
+                              ? dateinput.text = DateFormat('yyyy-MM-dd')
+                                  .format(DateTime.now())
+                              : dateinput.text,
+                          imageFile == null ? ' ' : imageFile!.path,
+                          "1",
+                          widget.u_id,
+                          "0",
+                          context,
+                          widget.mobile_no,
+                          imageFile == null ? ' ' : imageFile!.path,
+                          widget.token);
+                  updatetotaluserwillget();
+                  sendnotification();
                 }
               }
             }
-
-            setState(() {
-              isloading = false;
-            });
           },
           label: Padding(
             padding: const EdgeInsets.all(50),
-            child: isloading ? CircularProgressIndicator() : Text("SAVE"),
+            child: Text("SAVE"),
           ),
           focusColor: Colors.red,
           backgroundColor: Colors.red,

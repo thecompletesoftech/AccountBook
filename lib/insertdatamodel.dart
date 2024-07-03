@@ -31,11 +31,11 @@ class Insetdatamodel with ChangeNotifier {
       address,
       cnxt,
       token) async {
-    final users = FirebaseFirestore.instance.collection('customer_record');
+    final users = await FirebaseFirestore.instance.collection('customer_record');
     // final document_id =
     //     FirebaseFirestore.instance.collection('customer_record').doc().id;
 
-    users.add({
+  await  users.add({
       'id': "",
       'name': name.toString(),
       'mobile_no': mobile_no.toString(),
@@ -48,9 +48,9 @@ class Insetdatamodel with ChangeNotifier {
       "password": "123456",
       "token": "0",
       "youllgetamount": " "
-    }).then((value) {
+    }).then((value) async {
       upadtedocId(value.id, "customer_record");
-      insertentry(Collector_id, name, status_collector, des, amount, date,
+    await  insertentry(Collector_id, name, status_collector, des, amount, date,
           image, type, value.id, d_status, cnxt, mobile_no, p_image, token);
     }).catchError((error) => print("Failed to add user: $error"));
     notifyListeners();
@@ -82,8 +82,8 @@ class Insetdatamodel with ChangeNotifier {
 
   insertentry(collector_id, name, status_collector, dese, amount, date, image,
       type, id, d_status, cnxt, number, p_image, token) async {
-    CollectionReference entry = FirebaseFirestore.instance.collection('Entry');
-    entry.add({
+    CollectionReference entry =await FirebaseFirestore.instance.collection('Entry');
+  await  entry.add({
       'collector_id': collector_id,
       'user_id': id,
       'name': name,
@@ -157,7 +157,6 @@ class Insetdatamodel with ChangeNotifier {
     data.clear();
     finaldata_gave.clear();
     double total_amount_gave = 0;
-
     await FirebaseFirestore.instance
         .collection('Entry')
         .where('user_id', isEqualTo: userid.toString())
@@ -168,7 +167,7 @@ class Insetdatamodel with ChangeNotifier {
         Map<String, dynamic> fetchdata = value.data();
         finaldata_gave.add(fetchdata);
       }
-      print("final gave data" + finaldata_gave.length.toString());
+      print("final gave data length" + finaldata_gave.length.toString());
 
       for (int i = 0; i < finaldata_gave.length; i++) {
         total_amount_gave =
@@ -177,6 +176,7 @@ class Insetdatamodel with ChangeNotifier {
         print('total gave' + total_amount_gave.toString());
       }
     });
+     print('total gave------------------**************' + total_amount_gave.toString());
     return total_amount_gave;
   }
 
@@ -306,17 +306,17 @@ class Insetdatamodel with ChangeNotifier {
     // });
   }
 
-  deleterecord(id) {
+  deleterecord(id) async {
     CollectionReference users_delete =
-        FirebaseFirestore.instance.collection('customer_record');
+      await   FirebaseFirestore.instance.collection('customer_record');
 
-    users_delete
+   await users_delete
         .doc(id)
         .delete()
         .then((value) => print("User Deleted"))
         .catchError((error) => print("Failed to delete user: $error"));
 
-    FirebaseFirestore.instance
+   await FirebaseFirestore.instance
         .collection('Entry')
         .where('user_id', isEqualTo: id)
         .get()

@@ -310,7 +310,6 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
                 validation = 'please enter amount';
               });
             } else {
-              final users = FirebaseFirestore.instance.collection("Entry");
               if (widget.amount != null) {
                 await update_entry();
                 updatecustomerlastupdate_youwillget();
@@ -322,15 +321,13 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
                       id: widget.u_id,
                     ));
               } else {
-                print(DateTime.now().toString());
                 DateTime dt = DateTime.now();
                 var datetime = DateFormat('yyyy-MM-dd').format(dt);
-
                 if (widget.iscustomer == "0") {
+                  // is customer 0 new customer
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
-                  await Provider.of<Insetdatamodel>(context, listen: false)
-                      .insertdata(
+                  await Provider.of<Insetdatamodel>(context, listen: false).insertdata(
                           role == "collector"
                               ? prefs.getString('login_person_id')
                               : null,
@@ -350,9 +347,10 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
                           " ",
                           context,
                           widget.token);
-                  updatetotaluserwillget();
+                  await updatetotaluserwillget();
                   sendnotification();
                 } else {
+                  // is customer 1 exits customer
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   await Provider.of<Insetdatamodel>(context, listen: false)
@@ -375,8 +373,8 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
                           widget.mobile_no,
                           imageFile == null ? ' ' : imageFile!.path,
                           widget.token);
+                  await updatetotaluserwillget();
                   sendnotification();
-                  updatetotaluserwillget();
                 }
               }
             }
@@ -437,6 +435,7 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
     double userwillget =
         await Provider.of<Insetdatamodel>(context, listen: false)
             .get_total_Userwillget(widget.u_id);
+
     await Provider.of<Insetdatamodel>(context, listen: false)
         .updatecustomertable(
             collectionname: "customer_record",
@@ -475,5 +474,4 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
               : dateinput.text,
         });
   }
-
 }

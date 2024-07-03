@@ -13,9 +13,11 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:flutter_contacts/contact.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Constant/TextStyles/Textstyles.dart';
 import '../Constant/navigaotors/Navagate_Next.dart';
+import '../insertdatamodel.dart';
 import 'Edit_Entry.dart';
 import 'MoneyGaveScreen.dart';
 
@@ -95,17 +97,29 @@ class _CustomertransactionState extends State<Customertransaction> {
 
   @override
   void initState() {
-    print("hii searchdata" + widget.searchtxt.toString());
-    print("hii customer or not" + widget.iscustomer.toString());
-    print("adress" + widget.address.toString());
-    print('u_id' + widget.id.toString());
-    print('u_id for token' + widget.token.toString());
-    print("p_image" + widget.p_image);
+    // print("hii searchdata" + widget.searchtxt.toString());
+    // print("hii customer or not" + widget.iscustomer.toString());
+    // print("adress" + widget.address.toString());
+    // print('u_id' + widget.id.toString());
+    // print('u_id for token' + widget.token.toString());
+    // print("p_image" + widget.p_image);
     _getdata("Entry", widget.id);
     get_gave_total("Entry", widget.id);
     get_got_total("Entry", widget.id);
-
+    updatetotaluserwillget();
     super.initState();
+  }
+
+  updatetotaluserwillget() async {
+    double userwillget =
+        await Provider.of<Insetdatamodel>(context, listen: false)
+            .get_total_Userwillget(widget.id);
+
+    await Provider.of<Insetdatamodel>(context, listen: false)
+        .updatecustomertable(
+            collectionname: "customer_record",
+            id: widget.id,
+            jsondata: {"youllgetamount": userwillget});
   }
 
   @override
@@ -464,6 +478,7 @@ class _CustomertransactionState extends State<Customertransaction> {
                           itemBuilder: (BuildContext context, int index) {
                             // print("entry_id" + entry_data_id[index].toString());
                             // print("name" + widget.name.toString());
+
                             return GestureDetector(
                               onTap: () {
                                 if (role == "collector") {
@@ -977,7 +992,7 @@ class _CustomertransactionState extends State<Customertransaction> {
 
             DateTime tempDate =
                 DateFormat("yyyy-MM-dd").parse(firstdata[0]['date']);
-            print("tmpdate" + tempDate.toString());
+        
 
             final firstdate =
                 DateTime(tempDate.year, tempDate.month, tempDate.day);

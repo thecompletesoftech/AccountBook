@@ -3,6 +3,7 @@ import 'package:account_book/screens/homescreen.dart';
 import 'package:account_book/screens/morescreeen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/utils.dart';
 import 'package:provider/provider.dart';
 
 import '../Constant/TextStyles/Textstyles.dart';
@@ -16,8 +17,8 @@ class Recycle_Bin extends StatefulWidget {
 }
 
 class _Recycle_BinState extends State<Recycle_Bin> {
-  List data = [];
-  List Idlist = [];
+  List recyledata = [];
+  // List Idlist = [];
   @override
   void initState() {
     get_recent_deleted_customer();
@@ -38,7 +39,7 @@ class _Recycle_BinState extends State<Recycle_Bin> {
       ])),
       body: Column(
         children: [
-          data.length == 0
+          recyledata.length == 0
               ? Container(
                   padding: EdgeInsets.all(20),
                   child: Center(
@@ -47,212 +48,174 @@ class _Recycle_BinState extends State<Recycle_Bin> {
                     style: TextStyles.mb14,
                   )),
                 )
-              : SingleChildScrollView(
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    height: size.height * 0.9,
-                    child: ListView.builder(
-                        itemCount: data.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          var fname = data[index][1]['name'].split('');
+              : Expanded(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: recyledata.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        var fname = recyledata[index][1]['name'].split('');
 
-                          return Dismissible(
-                            background: Container(
-                                padding: EdgeInsets.only(left: 10),
-                                alignment: Alignment.centerLeft,
-                                color: Colors.red,
-                                child: Icon(
-                                  Icons.delete,
-                                  color: Colors.white,
-                                )),
-                            key: UniqueKey(),
-                            onDismissed: (DismissDirection direction) {
-                              if (direction == DismissDirection.endToStart) {
-                                Provider.of<Insetdatamodel>(context,
-                                        listen: false)
-                                    .deleterecord(data[index][0]);
-                                Provider.of<Insetdatamodel>(context,
-                                        listen: false)
-                                    .upadtedeltestatus_entry(
-                                        data[index][0], "0", "Entry");
-                                Provider.of<Insetdatamodel>(context,
-                                        listen: false)
-                                    .upadtedeltestatus(
-                                        data[index][0], '0', 'customer_record');
-                              } else {
-                                setState(() {
-                                  // _callNumber(
-                                  //     data[index]['mobile_no'].toString());
-                                  // _launchPhoneURL(
-                                  //     data[index]['mobile_no'].toString());
-                                });
-                              }
-                            },
-                            child: GestureDetector(
-                              onTap: () async {
-                                // _callNumber(
-                                //     data[index]['mobile_no'].toString());
-                                // _launchPhoneURL(
-                                //     data[index]['mobile_no'].toString());
-
-                                // final fullContact =
-                                //     await FlutterContacts.getContact(
-                                //         data[index]['contact_id']);
-                                // nextScreen(
-                                //     context,
-                                //     customertransaction(
-                                //       iscustomer: '1',
-                                //     ));
+                        return Column(
+                          children: [
+                            Dismissible(
+                              background: Container(
+                                  padding: EdgeInsets.only(left: 10),
+                                  alignment: Alignment.centerLeft,
+                                  color: Colors.red,
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  )),
+                              key: UniqueKey(),
+                              onDismissed: (DismissDirection direction) {
+                                if (direction == DismissDirection.endToStart) {
+                                  Provider.of<Insetdatamodel>(context,
+                                          listen: false)
+                                      .deleterecord(recyledata[index][0]);
+                                  Provider.of<Insetdatamodel>(context,
+                                          listen: false)
+                                      .upadtedeltestatus_entry(
+                                          recyledata[index][0], "0", "Entry");
+                                  Provider.of<Insetdatamodel>(context,
+                                          listen: false)
+                                      .upadtedeltestatus(recyledata[index][0],
+                                          '0', 'customer_record');
+                                } else {}
                               },
-                              child: Container(
-                                child: Card(
-                                  child: Column(
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                      contentPadding: EdgeInsets.zero,
+                                      leading: CircleAvatar(
+                                        backgroundColor: Colors.blueGrey,
+                                        child: Text(
+                                          fname[0].toString(),
+                                          style: TextStyles.mb18,
+                                        ),
+                                        radius: 30,
+                                      ),
+                                      // trailing: Text(
+                                      //   '\u{20B9} ' + data[index]['amount'],
+                                      //   style: TextStyle(
+                                      //       color: Colors.black, fontSize: 15),
+                                      // ),
+                                      subtitle: Text(
+                                        recyledata[index][1]['date'].toString(),
+                                        style: TextStyles.mb12,
+                                      ),
+                                      title: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 10),
+                                        child: Text(
+                                          recyledata[index][1]['name']
+                                              .toString(),
+                                          style: TextStyles.mb14,
+                                        ),
+                                      )).paddingSymmetric(horizontal: 10),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Container(
-                                        padding: EdgeInsets.all(10),
-                                        child: ListTile(
-                                            contentPadding: EdgeInsets.zero,
-                                            leading: CircleAvatar(
-                                              backgroundColor: Colors.blueGrey,
-                                              child: Text(
-                                                fname[0].toString(),
-                                                style: TextStyles.mb18,
-                                              ),
-                                              radius: 30,
-                                            ),
-                                            // trailing: Text(
-                                            //   '\u{20B9} ' + data[index]['amount'],
-                                            //   style: TextStyle(
-                                            //       color: Colors.black, fontSize: 15),
-                                            // ),
-                                            subtitle: Text(
-                                              data[index][1]['date'].toString(),
-                                              style: TextStyles.mb12,
-                                            ),
-                                            title: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 10),
-                                              child: Text(
-                                                data[index][1]['name']
-                                                    .toString(),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Provider.of<Insetdatamodel>(context,
+                                                  listen: false)
+                                              .upadtedeltestatus_entry(
+                                                  recyledata[index][0],
+                                                  "0",
+                                                  "Entry");
+                                          Provider.of<Insetdatamodel>(context,
+                                                  listen: false)
+                                              .upadtedeltestatus(
+                                                  recyledata[index][0],
+                                                  '0',
+                                                  'customer_record');
+                                          nextScreen(context, MoreScreen());
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Undo",
                                                 style: TextStyles.mb14,
                                               ),
-                                            )),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Icon(
+                                                Icons.replay_circle_filled,
+                                                color: Colors.blue,
+                                              )
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(20),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                Provider.of<Insetdatamodel>(
-                                                        context,
-                                                        listen: false)
-                                                    .upadtedeltestatus_entry(
-                                                        data[index][0],
-                                                        "0",
-                                                        "Entry");
-                                                Provider.of<Insetdatamodel>(
-                                                        context,
-                                                        listen: false)
-                                                    .upadtedeltestatus(
-                                                        data[index][0],
-                                                        '0',
-                                                        'customer_record');
-                                                nextScreen(
-                                                    context, MoreScreen());
-                                              },
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      "Undo",
-                                                      style: TextStyles.mb14,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    Icon(
-                                                      Icons
-                                                          .replay_circle_filled,
-                                                      color: Colors.blue,
-                                                    )
-                                                  ],
-                                                ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          showAlertDialog(
+                                              context, recyledata, index);
+                                          //   data[index][1]['name'],
+                                          // data[index][0]
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Delete",
+                                                style: TextStyles.mb14,
                                               ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                showAlertDialog(
-                                                    context,
-                                                    data[index][1]['name'],
-                                                    data[index][0]);
-                                              },
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Text(
-                                                      "Delete",
-                                                      style: TextStyles.mb14,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    Icon(
-                                                      Icons.delete,
-                                                      color: Colors.red,
-                                                    )
-                                                  ],
-                                                ),
+                                              SizedBox(
+                                                width: 5,
                                               ),
-                                            )
-                                          ],
+                                              Icon(
+                                                Icons.delete,
+                                                color: Colors.red,
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       )
                                     ],
-                                  ),
-                                ),
+                                  ).paddingSymmetric(horizontal: 10)
+                                ],
                               ),
                             ),
-                          );
-                        }),
-                  ),
+                            Divider(thickness: 1)
+                          ],
+                        );
+                      }).paddingSymmetric(horizontal: 10),
                 ),
         ],
       ),
     );
   }
 
-  showAlertDialog(BuildContext context, name, id) {
+  showAlertDialog(BuildContext context, List list, index) {
     // set up the button
     Widget okButton = TextButton(
-      child: Text("yes"),
-      onPressed: () {
-        Provider.of<Insetdatamodel>(context, listen: false).deleterecord(id);
-        get_recent_deleted_customer();
+      child: Text("Yes"),
+      onPressed: () async {
         backScreen(context);
-
+        await Provider.of<Insetdatamodel>(context, listen: false)
+            .deleterecord(list[index][0]);
+        get_recent_deleted_customer();
       },
     );
     Widget cancelButton = TextButton(
-      child: Text("no"),
+      child: Text("No"),
       onPressed: () {
         backScreen(context);
       },
     );
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Are you sure want to delete $name "),
+      title: Text("Are you sure want to delete ${list[index][1]['name']} "),
       actions: [okButton, cancelButton],
     );
 
@@ -266,18 +229,15 @@ class _Recycle_BinState extends State<Recycle_Bin> {
   }
 
   get_recent_deleted_customer() async {
-    FirebaseFirestore.instance
+  await  FirebaseFirestore.instance
         .collection('customer_record')
         .where('deleted', isEqualTo: "1")
         .get()
         .then((QueryDocumentSnapshot) {
       for (var queryDocumentSnapshot in QueryDocumentSnapshot.docs) {
-        Idlist.add(queryDocumentSnapshot.id);
-
         Map<String, dynamic> fetchdata = queryDocumentSnapshot.data();
-
         setState(() {
-          data.add([queryDocumentSnapshot.id, fetchdata]);
+          recyledata.add([queryDocumentSnapshot.id, fetchdata]);
         });
       }
     });
