@@ -136,16 +136,18 @@ class _CustomertransactionState extends State<Customertransaction> {
         onWillPop: () async => false,
         child: Scaffold(
           appBar: AppBar(
-              leading: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () =>
-                      // backScreen(context)
-                      nextScreen(
-                          context, HomeScreen(searchtxt: widget.searchtxt))),
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
+            leading: IconButton(
+                icon: Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () =>
+                    // backScreen(context)
+                    nextScreen(
+                        context, HomeScreen(searchtxt: widget.searchtxt))),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Row(
                     children: [
                       widget.contact == null
                           ? CircleAvatar(
@@ -198,528 +200,493 @@ class _CustomertransactionState extends State<Customertransaction> {
                             ),
                       SizedBox(width: 10),
                       widget.contact == null
-                          ? Container(
-                              width: size.width * 0.2,
+                          ? Expanded(
                               child: Text(
                                 widget.name.toString(),
                                 style: TextStyles.mb14,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             )
-                          : Container(
-                              width: size.width * 0.2,
+                          : Expanded(
                               child: Text(
                                 widget.contact!.displayName.toString(),
+                                maxLines: 2,
                                 style: TextStyles.mb14,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                     ],
                   ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        widget.contact == null
-                            ? GestureDetector(
-                                onTap: () {
-                                  _callNumber(widget.mobile_no);
-                                },
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 5, right: 5),
-                                  child: Icon(
-                                    Icons.call,
-                                    size: 20,
-                                  ),
-                                ))
-                            : GestureDetector(
-                                onTap: () {
-                                  _callNumber(
-                                      widget.contact!.phones.first.number);
-                                },
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 5, right: 5),
-                                  child: Icon(
-                                    Icons.call,
-                                    size: 20,
-                                  ),
-                                )),
-                        role != 'collector'
-                            ? GestureDetector(
-                                onTap: () {
-                                  nextScreen(
-                                      context,
-                                      Customer_profile(
-                                          name: widget.contact == null
-                                              ? widget.name
-                                              : widget.contact!.displayName,
-                                          mobile_no: widget.contact == null
-                                              ? widget.mobile_no
-                                              : widget
-                                                  .contact!.phones.first.number,
-                                          p_image: widget.p_image,
-                                          id: widget.id,
-                                          address: widget.address));
-                                },
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 5, right: 5),
-                                  child: Icon(
-                                    Icons.more_vert,
-                                    size: 20,
-                                  ),
-                                ),
-                              )
-                            : Container(),
-                        GestureDetector(
-                          onTap: () {
-                            showCustomRangePicker();
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 5, right: 5),
-                            child: Icon(
-                              Icons.filter_alt_outlined,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            nextScreen(context, Credit_Score(id: widget.id));
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 5, right: 5),
-                            child: Image.asset("image/Credit_Score.png",
-                                height: 30, width: 30),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              )),
-          body: Padding(
-            padding: const EdgeInsets.all(10),
-            child: SingleChildScrollView(
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  // mainAxisSize: MainAxisSize.max,
-                  // mainAxisAlignment: MainAxisAlignment.end,
+                ),
+                Row(
                   children: [
-                    Container(
-                      height: size.height * 0.07,
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "You will get",
-                                style: TextStyles.mb16,
+                    widget.contact == null
+                        ? GestureDetector(
+                            onTap: () {
+                              _callNumber(widget.mobile_no);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 5, right: 5),
+                              child: Icon(
+                                Icons.call,
+                                size: 20,
                               ),
-                              Text(
-                                "\u{20B9} " + total_amount.toString(),
-                                style: TextStyles.withColor(
-                                    TextStyles.mb14, Colors.red),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 80,
-                      child: Card(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Column(
-                                  children: [
-                                    Text(
-                                        '\u{20B9} ' +
-                                            total_amount_gave.toString(),
-                                        style: TextStyles.withColor(
-                                            TextStyles.mb20, Colors.red)),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text("you  Got",
-                                        style: TextStyles.withColor(
-                                            TextStyles.mn14, Colors.red))
-                                  ],
-                                ),
-                                VerticalDivider(
-                                  width: 5,
-                                  color: Colors.black,
-                                  thickness: 2,
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                        '\u{20B9} ' +
-                                            total_amount_got.toString(),
-                                        style: TextStyles.withColor(
-                                            TextStyles.mb20, Colors.green)),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text("you  Gave",
-                                        style: TextStyles.withColor(
-                                            TextStyles.mn14, Colors.green))
-                                  ],
-                                ),
-                              ],
+                            ))
+                        : GestureDetector(
+                            onTap: () {
+                              _callNumber(widget.contact!.phones.first.number);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 5, right: 5),
+                              child: Icon(
+                                Icons.call,
+                                size: 20,
+                              ),
+                            )),
+                    role != 'collector'
+                        ? GestureDetector(
+                            onTap: () {
+                              nextScreen(
+                                  context,
+                                  Customer_profile(
+                                      name: widget.contact == null
+                                          ? widget.name
+                                          : widget.contact!.displayName,
+                                      mobile_no: widget.contact == null
+                                          ? widget.mobile_no
+                                          : widget.contact!.phones.first.number,
+                                      p_image: widget.p_image,
+                                      id: widget.id,
+                                      address: widget.address));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 5, right: 5),
+                              child: Icon(
+                                Icons.more_vert,
+                                size: 20,
+                              ),
                             ),
-                            // Divider(),
-                            // GestureDetector(
-                            //   onTap: () {
-                            //     // nextScreen(context, ViewReport());
-                            //   },
-                            //   child: Row(
-                            //     mainAxisAlignment: MainAxisAlignment.center,
-                            //     children: [
-                            //       Padding(
-                            //         padding: const EdgeInsets.all(8.0),
-                            //         child: Text("View Report",
-                            //             style: TextStyles.withColor(
-                            //                 TextStyles.mb14, Colors.black)),
-                            //       ),
-                            //       SizedBox(width: 10),
-                            //       Icon(
-                            //         Icons.arrow_forward_ios_outlined,
-                            //         size: 15,
-                            //       )
-                            //     ],
-                            //   ),
-                            // ),
-                          ],
+                          )
+                        : Container(),
+                    GestureDetector(
+                      onTap: () {
+                        showCustomRangePicker();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 5, right: 5),
+                        child: Icon(
+                          Icons.filter_alt_outlined,
+                          size: 20,
                         ),
                       ),
                     ),
-                    Container(
-                      height: size.height * 0.07,
-                      child: GestureDetector(
-                        onTap: () {
-                          due_daye_bottomsheet();
-                        },
-                        child: Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Total Due Days",
-                                  style: TextStyles.mb16,
-                                ),
-                                Text(
-                                  totaldue.toString(),
-                                  style: TextStyles.withColor(
-                                      TextStyles.mb14, Colors.red),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     nextScreen(context, Credit_Score(id: widget.id));
+                    //   },
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(left: 5, right: 5),
+                    //     child: Image.asset("image/Credit_Score.png",
+                    //         height: 30, width: 30),
+                    //   ),
+                    // )
+                  ],
+                )
+              ],
+            ),
+          ),
+          body: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              // mainAxisSize: MainAxisSize.max,
+              // mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  height: size.height * 0.07,
+                  child: Card(
+                    child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "ENTRIES",
-                            style: TextStyles.mb12,
+                            "You will get",
+                            style: TextStyles.mb16,
                           ),
-                          Container(
-                            width: size.width * 0.4,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "You Gave",
-                                  style: TextStyles.withColor(
-                                      TextStyles.mb12, Colors.red),
-                                ),
-                                Text(
-                                  "You GOT",
-                                  style: TextStyles.withColor(
-                                      TextStyles.mb12, Colors.green),
-                                ),
-                              ],
-                            ),
+                          Text(
+                            "\u{20B9} " + total_amount.toString(),
+                            style: TextStyles.withColor(
+                                TextStyles.mb14, Colors.red),
                           )
                         ],
                       ),
                     ),
-                    SizedBox(height: 20),
-                    if (showloading == true)
-                      Center(child: CircularProgressIndicator()),
-                    if (entry_data.length == 0 && showloading == false)
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Center(
-                            child: Text(
-                          "NO DATA FOUND",
-                          style: TextStyles.mb14,
-                        )),
-                      ),
-                    Container(
-                      height: size.height * 0.45,
-                      child: ListView.builder(
-                          // physics: NeverScrollableScrollPhysics(),
-                          itemCount: entry_data.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            // print("entry_id" + entry_data_id[index].toString());
-                            // print("name" + widget.name.toString());
-
-                            return GestureDetector(
-                              onTap: () {
-                                if (role == "collector") {
-                                  if (entry_data[index]['status'] == "0") {
-                                    widget.contact == null
-                                        ? nextScreen(
-                                            context,
-                                            Edit_Entry(
-                                                u_id: entry_data[index]
-                                                    ['user_id'],
-                                                des: entry_data[index]
-                                                    ['description'],
-                                                p_image: widget.p_image,
-                                                name: widget.name,
-                                                contact: null,
-                                                amount: entry_data[index]
-                                                    ['amount'],
-                                                type: entry_data[index]['type'],
-                                                mobile_no: widget.mobile_no,
-                                                entry_id: entry_data_id[index]))
-                                        : nextScreen(
-                                            context,
-                                            Edit_Entry(
-                                                u_id: entry_data[index]
-                                                    ['user_id'],
-                                                des: entry_data[index]
-                                                    ['description'],
-                                                p_image: widget.p_image,
-                                                name:
-                                                    widget.contact!.displayName,
-                                                contact: widget.contact,
-                                                amount: entry_data[index]
-                                                    ['amount'],
-                                                type: entry_data[index]['type'],
-                                                mobile_no: widget.mobile_no,
-                                                entry_id:
-                                                    entry_data_id[index]));
-                                  }
-                                } else if (role == "admin") {
-                                  if (entry_data[index]['status'] == "1") {
-                                    widget.contact == null
-                                        ? nextScreen(
-                                            context,
-                                            Edit_Entry(
-                                                u_id: entry_data[index]
-                                                    ['user_id'],
-                                                des: entry_data[index]
-                                                    ['description'],
-                                                p_image: widget.p_image,
-                                                name: widget.name,
-                                                contact: null,
-                                                amount: entry_data[index]
-                                                    ['amount'],
-                                                type: entry_data[index]['type'],
-                                                mobile_no: widget.mobile_no,
-                                                entry_id: entry_data_id[index]))
-                                        : nextScreen(
-                                            context,
-                                            Edit_Entry(
-                                                u_id: entry_data[index]
-                                                    ['user_id'],
-                                                des: entry_data[index]
-                                                    ['description'],
-                                                p_image: widget.p_image,
-                                                name:
-                                                    widget.contact!.displayName,
-                                                contact: widget.contact,
-                                                amount: entry_data[index]
-                                                    ['amount'],
-                                                type: entry_data[index]['type'],
-                                                mobile_no: widget.mobile_no,
-                                                entry_id:
-                                                    entry_data_id[index]));
-                                  }
-                                }
-                              },
-                              child: Card(
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 5),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                          width: size.width * 0.3,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                DateFormat('dd-MM-yyyy').format(
-                                                    DateTime.parse(
-                                                        entry_data[index]
-                                                                ['date']
-                                                            .toString())),
-                                                maxLines: 2,
-                                                style: TextStyles.mn12,
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              entry_data[index]
-                                                          ['description'] !=
-                                                      " "
-                                                  ? Text(
-                                                      entry_data[index]
-                                                              ['description']
-                                                          .toString(),
-                                                      style: TextStyles.mn12,
-                                                    )
-                                                  : Text(
-                                                      " No Description",
-                                                      style: TextStyles.mn12,
-                                                    )
-                                            ],
-                                          )),
-                                      entry_data[index]['type'] == "0"
-                                          ? Text(
-                                              entry_data[index]['amount']
-                                                  .toString(),
-                                              style: TextStyles.withColor(
-                                                  TextStyles.mb12, Colors.red),
-                                            )
-                                          : Container(),
-                                      entry_data[index]['type'] == "1"
-                                          ? Text(
-                                              entry_data[index]['amount']
-                                                  .toString(),
-                                              style: TextStyles.withColor(
-                                                  TextStyles.mb12,
-                                                  Colors.green),
-                                            )
-                                          : Container(),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          }),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ),
-          floatingActionButton: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                role == "collector"
-                    ? Container()
-                    : GestureDetector(
-                        onTap: () {
-                          nextScreen(
-                              context,
-                              MoneyGaveScreen(
-                                  // ignore: unnecessary_null_comparison
-                                  name: widget.contact == null
-                                      ? widget.name.toString()
-                                      : widget.contact!.displayName,
-                                  mobile_no: widget.contact == null
-                                      ? widget.mobile_no
-                                      : widget.contact!.phones.first.number
-                                          .replaceAll(" ", '')
-                                          .toString()
-                                          .replaceAll("+91", ''),
-                                  iscustomer: widget.iscustomer,
-                                  u_id: widget.id,
-                                  p_image: widget.p_image,
-                                  token: widget.token));
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              width: size.width * 0.35,
-                              height: size.height * 0.05,
-                              alignment: Alignment.bottomCenter,
-                              child: Center(
-                                  child: Text(
-                                "You Gave  " + '\u{20B9} ',
-                                style: TextStyles.withColor(
-                                    TextStyles.mb16, Colors.white),
-                              ))),
+                Container(
+                  height: 80,
+                  child: Card(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Column(
+                              children: [
+                                Text('\u{20B9} ' + total_amount_gave.toString(),
+                                    style: TextStyles.withColor(
+                                        TextStyles.mb20, Colors.red)),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text("you  Got",
+                                    style: TextStyles.withColor(
+                                        TextStyles.mn14, Colors.red))
+                              ],
+                            ),
+                            VerticalDivider(
+                              width: 5,
+                              color: Colors.black,
+                              thickness: 2,
+                            ),
+                            Column(
+                              children: [
+                                Text('\u{20B9} ' + total_amount_got.toString(),
+                                    style: TextStyles.withColor(
+                                        TextStyles.mb20, Colors.green)),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text("you  Gave",
+                                    style: TextStyles.withColor(
+                                        TextStyles.mn14, Colors.green))
+                              ],
+                            ),
+                          ],
+                        ),
+                        // Divider(),
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     // nextScreen(context, ViewReport());
+                        //   },
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.center,
+                        //     children: [
+                        //       Padding(
+                        //         padding: const EdgeInsets.all(8.0),
+                        //         child: Text("View Report",
+                        //             style: TextStyles.withColor(
+                        //                 TextStyles.mb14, Colors.black)),
+                        //       ),
+                        //       SizedBox(width: 10),
+                        //       Icon(
+                        //         Icons.arrow_forward_ios_outlined,
+                        //         size: 15,
+                        //       )
+                        //     ],
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: size.height * 0.07,
+                  child: GestureDetector(
+                    onTap: () {
+                      due_daye_bottomsheet();
+                    },
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Total Due Days",
+                              style: TextStyles.mb16,
+                            ),
+                            Text(
+                              totaldue.toString(),
+                              style: TextStyles.withColor(
+                                  TextStyles.mb14, Colors.red),
+                            )
+                          ],
                         ),
                       ),
-                GestureDetector(
-                    onTap: (() {
-                      nextScreen(
-                          context, HomeScreen(searchtxt: widget.searchtxt));
-                    }),
-                    child: Container(
-                        width: 50,
-                        child: Icon(
-                          Icons.arrow_circle_left,
-                          size: 45,
-                        ))),
-                GestureDetector(
-                  onTap: () {
-                    nextScreen(
-                        context,
-                        MoneyGotScreen(
-                            // ignore: unnecessary_null_comparison
-                            name: widget.contact == null
-                                ? widget.name.toString()
-                                : widget.contact!.displayName,
-                            mobile_no: widget.contact == null
-                                ? widget.mobile_no
-                                : widget.contact!.phones.first.number
-                                    .replaceAll(" ", '')
-                                    .toString()
-                                    .replaceAll("+91", ''),
-                            iscustomer: widget.iscustomer,
-                            u_id: widget.id,
-                            p_image: widget.p_image,
-                            token: widget.token));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        height: size.height * 0.05,
-                        width: size.width * 0.35,
-                        child: Center(
-                            child: Text(
-                          "You Got " + '\u{20B9} ',
-                          style: TextStyles.withColor(
-                              TextStyles.mb16, Colors.white),
-                        ))),
+                    ),
                   ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "ENTRIES",
+                        style: TextStyles.mb12,
+                      ),
+                      Container(
+                        width: size.width * 0.4,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "You Gave",
+                              style: TextStyles.withColor(
+                                  TextStyles.mb12, Colors.red),
+                            ),
+                            Text(
+                              "You GOT",
+                              style: TextStyles.withColor(
+                                  TextStyles.mb12, Colors.green),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20),
+                if (showloading == true)
+                  Center(child: CircularProgressIndicator()),
+                if (entry_data.length == 0 && showloading == false)
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Center(
+                        child: Text(
+                      "NO DATA FOUND",
+                      style: TextStyles.mb14,
+                    )),
+                  ),
+                Container(
+                  height: size.height * 0.45,
+                  child: ListView.builder(
+                      // physics: NeverScrollableScrollPhysics(),
+                      itemCount: entry_data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        // print("entry_id" + entry_data_id[index].toString());
+                        // print("name" + widget.name.toString());
+                        entry_data
+                            .sort((b, a) => a['timespam'].compareTo(b['timespam']));
+                        return GestureDetector(
+                          onTap: () {
+                            if (role == "collector") {
+                              if (entry_data[index]['status'] == "0") {
+                                widget.contact == null
+                                    ? nextScreen(
+                                        context,
+                                        Edit_Entry(
+                                            u_id: entry_data[index]['user_id'],
+                                            des: entry_data[index]
+                                                ['description'],
+                                            p_image: widget.p_image,
+                                            name: widget.name,
+                                            contact: null,
+                                            amount: entry_data[index]['amount'],
+                                            type: entry_data[index]['type'],
+                                            mobile_no: widget.mobile_no,
+                                            entry_id: entry_data_id[index]))
+                                    : nextScreen(
+                                        context,
+                                        Edit_Entry(
+                                            u_id: entry_data[index]['user_id'],
+                                            des: entry_data[index]
+                                                ['description'],
+                                            p_image: widget.p_image,
+                                            name: widget.contact!.displayName,
+                                            contact: widget.contact,
+                                            amount: entry_data[index]['amount'],
+                                            type: entry_data[index]['type'],
+                                            mobile_no: widget.mobile_no,
+                                            entry_id: entry_data_id[index]));
+                              }
+                            } else if (role == "admin") {
+                              if (entry_data[index]['status'] == "1") {
+                                widget.contact == null
+                                    ? nextScreen(
+                                        context,
+                                        Edit_Entry(
+                                            u_id: entry_data[index]['user_id'],
+                                            des: entry_data[index]
+                                                ['description'],
+                                            p_image: widget.p_image,
+                                            name: widget.name,
+                                            contact: null,
+                                            amount: entry_data[index]['amount'],
+                                            type: entry_data[index]['type'],
+                                            mobile_no: widget.mobile_no,
+                                            entry_id: entry_data_id[index]))
+                                    : nextScreen(
+                                        context,
+                                        Edit_Entry(
+                                            u_id: entry_data[index]['user_id'],
+                                            des: entry_data[index]
+                                                ['description'],
+                                            p_image: widget.p_image,
+                                            name: widget.contact!.displayName,
+                                            contact: widget.contact,
+                                            amount: entry_data[index]['amount'],
+                                            type: entry_data[index]['type'],
+                                            mobile_no: widget.mobile_no,
+                                            entry_id: entry_data_id[index]));
+                              }
+                            }
+                          },
+                          child: Card(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 5),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                      width: size.width * 0.3,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            DateFormat('dd-MM-yyyy').format(
+                                                DateTime.parse(entry_data[index]
+                                                        ['date']
+                                                    .toString())),
+                                            maxLines: 2,
+                                            style: TextStyles.mn12,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          entry_data[index]['description'] !=
+                                                  " "
+                                              ? Text(
+                                                  entry_data[index]
+                                                          ['description']
+                                                      .toString(),
+                                                  style: TextStyles.mn12,
+                                                )
+                                              : Text(
+                                                  " No Description",
+                                                  style: TextStyles.mn12,
+                                                )
+                                        ],
+                                      )),
+                                  entry_data[index]['type'] == "0"
+                                      ? Text(
+                                          entry_data[index]['amount']
+                                              .toString(),
+                                          style: TextStyles.withColor(
+                                              TextStyles.mb12, Colors.red),
+                                        )
+                                      : Container(),
+                                  entry_data[index]['type'] == "1"
+                                      ? Text(
+                                          entry_data[index]['amount']
+                                              .toString(),
+                                          style: TextStyles.withColor(
+                                              TextStyles.mb12, Colors.green),
+                                        )
+                                      : Container(),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
                 ),
               ],
             ),
+          ),
+          floatingActionButton: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              role == "collector"
+                  ? Container()
+                  : GestureDetector(
+                      onTap: () {
+                        nextScreen(
+                            context,
+                            MoneyGaveScreen(
+                                // ignore: unnecessary_null_comparison
+                                name: widget.contact == null
+                                    ? widget.name.toString()
+                                    : widget.contact!.displayName,
+                                mobile_no: widget.contact == null
+                                    ? widget.mobile_no
+                                    : widget.contact!.phones.first.number
+                                        .replaceAll(" ", '')
+                                        .toString()
+                                        .replaceAll("+91", ''),
+                                iscustomer: widget.iscustomer,
+                                u_id: widget.id,
+                                p_image: widget.p_image,
+                                token: widget.token));
+                      },
+                      child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          height: size.height * 0.05,
+                          alignment: Alignment.bottomCenter,
+                          child: Center(
+                              child: Text(
+                            "You Gave  " + '\u{20B9} ',
+                            style: TextStyles.withColor(
+                                TextStyles.mb16, Colors.white),
+                          ))),
+                    ),
+              SizedBox(width: 10),
+              GestureDetector(
+                  onTap: (() {
+                    nextScreen(
+                        context, HomeScreen(searchtxt: widget.searchtxt));
+                  }),
+                  child: Container(
+                      width: 50,
+                      child: Icon(
+                        Icons.arrow_circle_left,
+                        size: 45,
+                      ))),
+              SizedBox(width: 10),
+              GestureDetector(
+                onTap: () {
+                  nextScreen(
+                      context,
+                      MoneyGotScreen(
+                          // ignore: unnecessary_null_comparison
+                          name: widget.contact == null
+                              ? widget.name.toString()
+                              : widget.contact!.displayName,
+                          mobile_no: widget.contact == null
+                              ? widget.mobile_no
+                              : widget.contact!.phones.first.number
+                                  .replaceAll(" ", '')
+                                  .toString()
+                                  .replaceAll("+91", ''),
+                          iscustomer: widget.iscustomer,
+                          u_id: widget.id,
+                          p_image: widget.p_image,
+                          token: widget.token));
+                },
+                child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    height: size.height * 0.05,
+                    child: Center(
+                        child: Text(
+                      "  You Got  " + '\u{20B9} ',
+                      style:
+                          TextStyles.withColor(TextStyles.mb16, Colors.white),
+                    ))),
+              ),
+            ],
           ),
         ));
   }
@@ -942,7 +909,6 @@ class _CustomertransactionState extends State<Customertransaction> {
       setState(() {
         showloading = true;
       });
-
       FirebaseFirestore.instance
           .collection(tablename)
           .where('user_id', isEqualTo: id.toString())
@@ -992,7 +958,6 @@ class _CustomertransactionState extends State<Customertransaction> {
 
             DateTime tempDate =
                 DateFormat("yyyy-MM-dd").parse(firstdata[0]['date']);
-        
 
             final firstdate =
                 DateTime(tempDate.year, tempDate.month, tempDate.day);

@@ -38,85 +38,36 @@ class _ApplockEnableState extends State<ApplockEnable> {
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Set App Lock Biometric",
-                  style: TextStyles.mb14,
-                ),
-                Container(
-                  child: FlutterSwitch(
-                    width: 60,
-                    height: 30,
-                    valueFontSize: 25.0,
-                    toggleSize: 20,
-                    value: status,
-                    borderRadius: 30.0,
-                    padding: 8.0,
-                    showOnOff: false,
-                    onToggle: (val) {
-                      setState(() {
-                        status = val;
-                        setbiometric(val);
-                      });
-                    },
-                  ),
-                ),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text(
+            //       "Set App Lock Biometric",
+            //       style: TextStyles.mb14,
+            //     ),
+            //     Container(
+            //       child: FlutterSwitch(
+            //         width: 60,
+            //         height: 30,
+            //         valueFontSize: 25.0,
+            //         toggleSize: 20,
+            //         value: status,
+            //         borderRadius: 30.0,
+            //         padding: 8.0,
+            //         showOnOff: false,
+            //         onToggle: (val) {
+            //           setState(() {
+            //             status = val;
+            //             setbiometric(val);
+            //           });
+            //         },
+            //       ),
+            //     ),
+            //   ],
+            // ),
             SizedBox(height: 15),
             GestureDetector(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (_) => AlertDialog(
-                          title: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
-                              children: [
-                                TextField(
-                                  maxLength: 4,
-                                  keyboardType: TextInputType.number,
-                                  controller: spin,
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    hintText: 'set pin',
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                TextField(
-                                  maxLength: 4,
-                                  keyboardType: TextInputType.number,
-                                  controller: cpin,
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    hintText: 'confitm pin',
-                                  ),
-                                ),
-                                ElevatedButton(
-                                  child: Text('save'),
-                                  onPressed: () async {
-                                    if (spin.text.length == cpin.text.length) {
-                                      SharedPreferences prefs =
-                                          await SharedPreferences.getInstance();
-                                      prefs.setString("savepin", spin.text);
-                                      backScreen(context);
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      primary: Colors.purple,
-                                      textStyle: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ));
-              },
+              onTap: () {},
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -139,6 +90,68 @@ class _ApplockEnableState extends State<ApplockEnable> {
                           statuspin = val;
                           setpin(statuspin);
                         });
+                        if (val) {
+                          showDialog(
+                            barrierDismissible: false,
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                    title: Padding(
+                                      padding: const EdgeInsets.all(15),
+                                      child: Column(
+                                        children: [
+                                          TextField(
+                                            maxLength: 4,
+                                            keyboardType: TextInputType.number,
+                                            controller: spin,
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              hintText: 'set pin',
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          TextField(
+                                            maxLength: 4,
+                                            keyboardType: TextInputType.number,
+                                            controller: cpin,
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              hintText: 'confitm pin',
+                                            ),
+                                          ),
+                                          ElevatedButton(
+                                            child: Text('save'),
+                                            onPressed: () async {
+                                              if (spin.text.length ==
+                                                  cpin.text.length) {
+                                                SharedPreferences prefs =
+                                                    await SharedPreferences
+                                                        .getInstance();
+                                                prefs.setString(
+                                                    "savepin", spin.text);
+                                                statuspin = true;
+                                                setpin(true);
+                                                backScreen(context);
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                                primary: Colors.purple,
+                                                textStyle: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )).then((value) {
+                            // setState(() {
+                            //   statuspin = false;
+                            //   setpin(false);
+                            // });
+                          });
+                        }
                       },
                     ),
                   ),

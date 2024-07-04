@@ -22,17 +22,18 @@ class _Credit_ScoreState extends State<Credit_Score> {
 
   @override
   void initState() {
-    get_gave_total('Entry', widget.id);
-    get_got_total('Entry', widget.id);
-    // getscore();
+    calvulatescroe();
     super.initState();
+  }
+
+  calvulatescroe() async {
+    await get_gave_total('Entry', widget.id);
+    await get_got_total('Entry', widget.id);
+    getscore();
   }
 
   @override
   Widget build(BuildContext context) {
-    total_amount = total_amount_gave - total_amount_got;
-    total_per = total_amount_gave / total_amount_got;
-    score = 900 / total_per;
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
@@ -116,7 +117,7 @@ class _Credit_ScoreState extends State<Credit_Score> {
                 ], annotations: <GaugeAnnotation>[
                   GaugeAnnotation(
                       widget: Container(
-                          child: Text(score.round().toStringAsFixed(0),
+                          child: Text(score.round().toString(),
                               style: TextStyle(
                                   fontSize: 25, fontWeight: FontWeight.bold))),
                       angle: 90,
@@ -189,7 +190,7 @@ class _Credit_ScoreState extends State<Credit_Score> {
           if (fetchdata_gave.length == 0) {
             print("hii");
           } else
-            for (var i = 0; i <= fetchdata_gave.length; i++) {
+            for (var i = 0; i < fetchdata_gave.length; i++) {
               total_amount_gave =
                   double.parse(fetchdata_gave[i]['amount']) + total_amount_gave;
             }
@@ -252,7 +253,7 @@ class _Credit_ScoreState extends State<Credit_Score> {
           if (fetchdata_got.length == 0) {
             print("hii");
           } else
-            for (var i = 0; i <= fetchdata_got.length; i++) {
+            for (var i = 0; i < fetchdata_got.length; i++) {
               setState(() {
                 total_amount_got =
                     double.parse(fetchdata_got[i]['amount']) + total_amount_got;
@@ -277,7 +278,7 @@ class _Credit_ScoreState extends State<Credit_Score> {
           if (fetchdata_got.length == 0) {
             print("hii");
           } else
-            for (var i = 0; i <= fetchdata_got.length; i++) {
+            for (var i = 0; i < fetchdata_got.length; i++) {
               setState(() {
                 total_amount_got =
                     double.parse(fetchdata_got[i]['amount']) + total_amount_got;

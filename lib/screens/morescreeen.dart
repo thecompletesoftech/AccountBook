@@ -39,7 +39,7 @@ class _MoreScreenState extends State<MoreScreen> {
     var size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.grey[300],
+       backgroundColor: Colors.white,
         appBar: PreferredSize(
             child: Column(
               children: [
@@ -141,123 +141,123 @@ class _MoreScreenState extends State<MoreScreen> {
                   SizedBox(
                     height: 5,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: Card(
-                          child: InkWell(
-                            splashColor: Colors.blue.withAlpha(30),
-                            onTap: () {
-                              debugPrint('Card tapped.');
-                            },
-                            child: SizedBox(
-                              height: 140,
-                              child: Column(
-                                children: const <Widget>[
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage:
-                                        AssetImage('image/business_card.jpg'),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    'Business \n Card',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Card(
-                          child: InkWell(
-                            splashColor: Colors.blue.withAlpha(30),
-                            onTap: () {
-                              debugPrint('Card tapped.');
-                            },
-                            child: SizedBox(
-                              height: 140,
-                              child: Column(
-                                children: const <Widget>[
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage: AssetImage(
-                                      'image/cashbook.jpg',
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Text(
-                                    'Cashbook',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Card(
-                          child: InkWell(
-                            splashColor: Colors.blue.withAlpha(30),
-                            onTap: () {
-                              debugPrint('Card tapped.');
-                            },
-                            child: SizedBox(
-                              height: 140,
-                              child: Column(
-                                children: const <Widget>[
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage:
-                                        AssetImage('image/business_stamp.png'),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    'Business \n Stamp',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //   children: <Widget>[
+                  //     Expanded(
+                  //       flex: 1,
+                  //       child: Card(
+                  //         child: InkWell(
+                  //           splashColor: Colors.blue.withAlpha(30),
+                  //           onTap: () {
+                  //             debugPrint('Card tapped.');
+                  //           },
+                  //           child: SizedBox(
+                  //             height: 140,
+                  //             child: Column(
+                  //               children: const <Widget>[
+                  //                 SizedBox(
+                  //                   height: 10,
+                  //                 ),
+                  //                 CircleAvatar(
+                  //                   radius: 30,
+                  //                   backgroundImage:
+                  //                       AssetImage('image/business_card.jpg'),
+                  //                 ),
+                  //                 SizedBox(
+                  //                   height: 10,
+                  //                 ),
+                  //                 Text(
+                  //                   'Business \n Card',
+                  //                   textAlign: TextAlign.center,
+                  //                   style: TextStyle(
+                  //                     fontSize: 16,
+                  //                   ),
+                  //                 )
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     Expanded(
+                  //       flex: 1,
+                  //       child: Card(
+                  //         child: InkWell(
+                  //           splashColor: Colors.blue.withAlpha(30),
+                  //           onTap: () {
+                  //             debugPrint('Card tapped.');
+                  //           },
+                  //           child: SizedBox(
+                  //             height: 140,
+                  //             child: Column(
+                  //               children: const <Widget>[
+                  //                 SizedBox(
+                  //                   height: 10,
+                  //                 ),
+                  //                 CircleAvatar(
+                  //                   radius: 30,
+                  //                   backgroundImage: AssetImage(
+                  //                     'image/cashbook.jpg',
+                  //                   ),
+                  //                 ),
+                  //                 SizedBox(
+                  //                   height: 20,
+                  //                 ),
+                  //                 Text(
+                  //                   'Cashbook',
+                  //                   textAlign: TextAlign.center,
+                  //                   style: TextStyle(
+                  //                     fontSize: 16,
+                  //                   ),
+                  //                 )
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     Expanded(
+                  //       flex: 1,
+                  //       child: Card(
+                  //         child: InkWell(
+                  //           splashColor: Colors.blue.withAlpha(30),
+                  //           onTap: () {
+                  //             debugPrint('Card tapped.');
+                  //           },
+                  //           child: SizedBox(
+                  //             height: 140,
+                  //             child: Column(
+                  //               children: const <Widget>[
+                  //                 SizedBox(
+                  //                   height: 10,
+                  //                 ),
+                  //                 CircleAvatar(
+                  //                   radius: 30,
+                  //                   backgroundImage:
+                  //                       AssetImage('image/business_stamp.png'),
+                  //                 ),
+                  //                 SizedBox(
+                  //                   height: 10,
+                  //                 ),
+                  //                 Text(
+                  //                   'Business \n Stamp',
+                  //                   textAlign: TextAlign.center,
+                  //                   style: TextStyle(
+                  //                     fontSize: 16,
+                  //                   ),
+                  //                 )
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  // SizedBox(
+                  //   height: 5,
+                  // ),
                   Container(
                     color: Colors.white,
                     child: ExpansionTile(
@@ -306,66 +306,6 @@ class _MoreScreenState extends State<MoreScreen> {
                               ),
                               title: Text('App Lock', style: TextStyles.mb14),
                             ),
-                          ),
-                        ),
-                        // Padding(
-                        //   padding: EdgeInsets.only(left: 56.0),
-                        //   child: GestureDetector(
-                        //     onTap: () {
-                        //       print("hii");
-                        //       nextScreen(context, ApplockEnable());
-                        //     },
-                        //     child: ListTile(
-                        //       trailing: Padding(
-                        //         padding: EdgeInsets.only(right: 7.0),
-                        //         child: Icon(
-                        //           Icons.arrow_forward_ios_rounded,
-                        //           size: 16,
-                        //         ),
-                        //       ),
-                        //       title: Text('App Lock'),
-                        //     ),
-                        //   ),
-                        // ),
-
-                        // Padding(
-                        //   padding: EdgeInsets.only(left: 56.0),
-                        //   child: ListTile(
-                        //     trailing: Padding(
-                        //       padding: EdgeInsets.only(right: 7.0),
-                        //       child: Icon(
-                        //         Icons.arrow_forward_ios_rounded,
-                        //         size: 16,
-                        //       ),
-                        //     ),
-                        //     title: Text('Language'),
-                        //   ),
-                        // ),
-                        // Padding(
-                        //   padding: EdgeInsets.only(left: 56.0),
-                        //   child: ListTile(
-                        //     trailing: Padding(
-                        //       padding: EdgeInsets.only(right: 7.0),
-                        //       child: Icon(
-                        //         Icons.arrow_forward_ios_rounded,
-                        //         size: 16,
-                        //       ),
-                        //     ),
-                        //     title: Text('Backup Information'),
-                        //   ),
-                        // ),
-
-                        Padding(
-                          padding: EdgeInsets.only(left: 56.0),
-                          child: ListTile(
-                            trailing: Padding(
-                              padding: EdgeInsets.only(right: 7.0),
-                              child: Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                size: 16,
-                              ),
-                            ),
-                            title: Text('App Update', style: TextStyles.mb14),
                           ),
                         ),
                       ],
@@ -500,7 +440,7 @@ class _MoreScreenState extends State<MoreScreen> {
                       nextScreen(context, login());
                     },
                     child: Container(
-                      height: size.height * 0.05,
+                      height: size.height * 0.08,
                       width: size.width,
                       padding: EdgeInsets.only(
                         top: 5,

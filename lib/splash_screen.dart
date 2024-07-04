@@ -29,7 +29,6 @@ class _splashState extends State<splash> {
   var pin;
   @override
   void initState() {
-    super.initState();
     getpin();
     getsetbiometric();
     // _getBiometricsSupport();
@@ -163,10 +162,18 @@ class _splashState extends State<splash> {
 
     if (pin == true) {
       print("pin false");
+      print("pin"+ prefs.getString("savepin").toString());
+      if(prefs.getString("savepin") == null ||prefs.getString("savepin") == ""){
+        prefs.setBool('setpin',false);
+        nextScreen(context, HomeScreen());
+      }else{
+
       nextScreen(context, LockScreen());
+      }
     } else {
+      nextScreen(context, HomeScreen());
       print("print trye");
-      _getBiometricsSupport();
+      // _getBiometricsSupport();
     }
   }
 }

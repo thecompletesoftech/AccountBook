@@ -10,6 +10,7 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -262,80 +263,96 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
                 validation = 'please enter values';
               });
             } else {
+              setState(() {
+                isloading = true;
+              });
               if (widget.amount != null) {
-                //  update entry
-                await update_entry();
-                await updatecustomerlastupdate_youwillget();
-                nextScreen(
-                    context,
-                    Customertransaction(
-                        p_image: widget.p_image == " " ? " " : widget.p_image,
-                        name: widget.name,
-                        id: widget.u_id));
+                if (isloading) {
+                  //  update entry
+                  await update_entry();
+                  await updatecustomerlastupdate_youwillget();
+                  nextScreen(
+                      context,
+                      Customertransaction(
+                          p_image: widget.p_image == " " ? " " : widget.p_image,
+                          name: widget.name,
+                          id: widget.u_id));
+                }
               } else {
-                if (widget.iscustomer == "0") {
-                  //  is customer 0 = new customer
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  await Provider.of<Insetdatamodel>(context, listen: false)
-                      .insertdata(
-                          role == "collector"
-                              ? prefs.getString('login_person_id')
-                              : null,
-                          widget.name,
-                          role == "collector" ? "0" : "1",
-                          widget.mobile_no,
-                          description.text.isEmpty ? ' ' : description.text,
-                          dateinput.text.isEmpty
-                              ? dateinput.text = DateFormat('yyyy-MM-dd')
-                                  .format(DateTime.now())
-                              : dateinput.text,
-                          '0',
-                          amount.text,
-                          imageFile == null ? ' ' : imageFile!.path,
-                          "1",
-                          "0",
-                          " ",
-                          " ",
-                          context,
-                          widget.token);
-                  await updatetotaluserwillget();
-                  await sendnotification();
-                } else {
-                  //  is customer 0 = exits customer
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  await Provider.of<Insetdatamodel>(context, listen: false)
-                      .insertentry(
-                          role == "collector"
-                              ? prefs.getString('login_person_id')
-                              : null,
-                          widget.name,
-                          role == "collector" ? "0" : "1",
-                          description.text.isEmpty ? ' ' : description.text,
-                          amount.text,
-                          dateinput.text.isEmpty
-                              ? dateinput.text = DateFormat('yyyy-MM-dd')
-                                  .format(DateTime.now())
-                              : dateinput.text,
-                          imageFile == null ? ' ' : imageFile!.path,
-                          "1",
-                          widget.u_id,
-                          "0",
-                          context,
-                          widget.mobile_no,
-                          imageFile == null ? ' ' : imageFile!.path,
-                          widget.token);
-                  updatetotaluserwillget();
-                  sendnotification();
+                if (isloading) {
+                  if (widget.iscustomer == "0") {
+                    //  is customer 0 = new customer
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    await Provider.of<Insetdatamodel>(context, listen: false)
+                        .insertdata(
+                            role == "collector"
+                                ? prefs.getString('login_person_id')
+                                : null,
+                            widget.name,
+                            role == "collector" ? "0" : "1",
+                            widget.mobile_no,
+                            description.text.isEmpty ? ' ' : description.text,
+                            dateinput.text.isEmpty
+                                ? dateinput.text = DateFormat('yyyy-MM-dd')
+                                    .format(DateTime.now())
+                                : dateinput.text,
+                            DateTime.now().millisecondsSinceEpoch.toString(),
+                            '0',
+                            amount.text,
+                            imageFile == null ? ' ' : imageFile!.path,
+                            "1",
+                            "0",
+                            " ",
+                            " ",
+                            context,
+                            widget.token);
+                    await updatetotaluserwillget();
+                    await sendnotification();
+                  } else {
+                    //  is customer 0 = exits customer
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    await Provider.of<Insetdatamodel>(context, listen: false)
+                        .insertentry(
+                            role == "collector"
+                                ? prefs.getString('login_person_id')
+                                : null,
+                            widget.name,
+                            role == "collector" ? "0" : "1",
+                            description.text.isEmpty ? ' ' : description.text,
+                            amount.text,
+                            dateinput.text.isEmpty
+                                ? dateinput.text = DateFormat('yyyy-MM-dd')
+                                    .format(DateTime.now())
+                                : dateinput.text,
+                            DateTime.now().millisecondsSinceEpoch.toString(),
+                            imageFile == null ? ' ' : imageFile!.path,
+                            "1",
+                            widget.u_id,
+                            "0",
+                            context,
+                            widget.mobile_no,
+                            imageFile == null ? ' ' : imageFile!.path,
+                            widget.token);
+                    updatetotaluserwillget();
+                    sendnotification();
+                  }
                 }
               }
+              setState(() {
+                isloading = false;
+              });
             }
           },
-          label: Padding(
-            padding: const EdgeInsets.all(50),
-            child: Text("SAVE"),
-          ),
+          label: isloading
+              ? Center(
+                  child: CircularProgressIndicator(color: Colors.white)
+                      .paddingSymmetric(horizontal: 10))
+              : Padding(
+                  padding: const EdgeInsets.all(50),
+                  child: Text("SAVE"),
+                ),
           focusColor: Colors.red,
           backgroundColor: Colors.red,
         ),

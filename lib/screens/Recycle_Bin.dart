@@ -18,7 +18,9 @@ class Recycle_Bin extends StatefulWidget {
 
 class _Recycle_BinState extends State<Recycle_Bin> {
   List recyledata = [];
-  // List Idlist = [];
+  List Idlist = [];
+
+  bool isloading = false;
   @override
   void initState() {
     get_recent_deleted_customer();
@@ -37,162 +39,205 @@ class _Recycle_BinState extends State<Recycle_Bin> {
           style: TextStyles.mb18,
         )
       ])),
-      body: Column(
+      body: Stack(
         children: [
-          recyledata.length == 0
-              ? Container(
-                  padding: EdgeInsets.all(20),
-                  child: Center(
-                      child: Text(
-                    "No Data found",
-                    style: TextStyles.mb14,
-                  )),
-                )
-              : Expanded(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: recyledata.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        var fname = recyledata[index][1]['name'].split('');
+          Column(
+            children: [
+              recyledata.length == 0
+                  ? Container(
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      child: Center(
+                          child: Text(
+                        "No Data found",
+                        style: TextStyles.mb14,
+                      )),
+                    )
+                  : Expanded(
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: recyledata.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            var fname = recyledata[index][1]['name'].split('');
 
-                        return Column(
-                          children: [
-                            Dismissible(
-                              background: Container(
-                                  padding: EdgeInsets.only(left: 10),
-                                  alignment: Alignment.centerLeft,
-                                  color: Colors.red,
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                  )),
-                              key: UniqueKey(),
-                              onDismissed: (DismissDirection direction) {
-                                if (direction == DismissDirection.endToStart) {
-                                  Provider.of<Insetdatamodel>(context,
-                                          listen: false)
-                                      .deleterecord(recyledata[index][0]);
-                                  Provider.of<Insetdatamodel>(context,
-                                          listen: false)
-                                      .upadtedeltestatus_entry(
-                                          recyledata[index][0], "0", "Entry");
-                                  Provider.of<Insetdatamodel>(context,
-                                          listen: false)
-                                      .upadtedeltestatus(recyledata[index][0],
-                                          '0', 'customer_record');
-                                } else {}
-                              },
-                              child: Column(
-                                children: [
-                                  ListTile(
-                                      contentPadding: EdgeInsets.zero,
-                                      leading: CircleAvatar(
-                                        backgroundColor: Colors.blueGrey,
-                                        child: Text(
-                                          fname[0].toString(),
-                                          style: TextStyles.mb18,
-                                        ),
-                                        radius: 30,
-                                      ),
-                                      // trailing: Text(
-                                      //   '\u{20B9} ' + data[index]['amount'],
-                                      //   style: TextStyle(
-                                      //       color: Colors.black, fontSize: 15),
-                                      // ),
-                                      subtitle: Text(
-                                        recyledata[index][1]['date'].toString(),
-                                        style: TextStyles.mb12,
-                                      ),
-                                      title: Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 10),
-                                        child: Text(
-                                          recyledata[index][1]['name']
-                                              .toString(),
-                                          style: TextStyles.mb14,
-                                        ),
-                                      )).paddingSymmetric(horizontal: 10),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                            return Column(
+                              children: [
+                                Dismissible(
+                                  background: Container(
+                                      padding: EdgeInsets.only(left: 10),
+                                      alignment: Alignment.centerLeft,
+                                      color: Colors.red,
+                                      child: Icon(
+                                        Icons.delete,
+                                        color: Colors.white,
+                                      )),
+                                  key: UniqueKey(),
+                                  onDismissed: (DismissDirection direction) {
+                                    if (direction ==
+                                        DismissDirection.endToStart) {
+                                      Provider.of<Insetdatamodel>(context,
+                                              listen: false)
+                                          .deleterecord(recyledata[index][0]);
+                                      Provider.of<Insetdatamodel>(context,
+                                              listen: false)
+                                          .upadtedeltestatus_entry(
+                                              recyledata[index][0],
+                                              "0",
+                                              "Entry");
+                                      Provider.of<Insetdatamodel>(context,
+                                              listen: false)
+                                          .upadtedeltestatus(
+                                              recyledata[index][0],
+                                              '0',
+                                              'customer_record');
+                                    } else {}
+                                  },
+                                  child: Column(
                                     children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Provider.of<Insetdatamodel>(context,
-                                                  listen: false)
-                                              .upadtedeltestatus_entry(
-                                                  recyledata[index][0],
-                                                  "0",
-                                                  "Entry");
-                                          Provider.of<Insetdatamodel>(context,
-                                                  listen: false)
-                                              .upadtedeltestatus(
-                                                  recyledata[index][0],
-                                                  '0',
-                                                  'customer_record');
-                                          nextScreen(context, MoreScreen());
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "Undo",
-                                                style: TextStyles.mb14,
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Icon(
-                                                Icons.replay_circle_filled,
-                                                color: Colors.blue,
-                                              )
-                                            ],
+                                      ListTile(
+                                          contentPadding: EdgeInsets.zero,
+                                          leading: CircleAvatar(
+                                            backgroundColor: Colors.blueGrey,
+                                            child: Text(
+                                              fname[0].toString(),
+                                              style: TextStyles.mb18,
+                                            ),
+                                            radius: 30,
                                           ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          showAlertDialog(
-                                              context, recyledata, index);
-                                          //   data[index][1]['name'],
-                                          // data[index][0]
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "Delete",
-                                                style: TextStyles.mb14,
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Icon(
-                                                Icons.delete,
-                                                color: Colors.red,
-                                              )
-                                            ],
+                                          // trailing: Text(
+                                          //   '\u{20B9} ' + data[index]['amount'],
+                                          //   style: TextStyle(
+                                          //       color: Colors.black, fontSize: 15),
+                                          // ),
+                                          subtitle: Text(
+                                            recyledata[index][1]['date']
+                                                .toString(),
+                                            style: TextStyles.mb12,
                                           ),
-                                        ),
-                                      )
+                                          title: Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Text(
+                                              recyledata[index][1]['name']
+                                                  .toString(),
+                                              style: TextStyles.mb14,
+                                            ),
+                                          )).paddingSymmetric(horizontal: 10),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Provider.of<Insetdatamodel>(
+                                                      context,
+                                                      listen: false)
+                                                  .upadtedeltestatus_entry(
+                                                      recyledata[index][0],
+                                                      "0",
+                                                      "Entry");
+                                              Provider.of<Insetdatamodel>(
+                                                      context,
+                                                      listen: false)
+                                                  .upadtedeltestatus(
+                                                      recyledata[index][0],
+                                                      '0',
+                                                      'customer_record');
+                                              nextScreen(context, MoreScreen());
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "Undo",
+                                                    style: TextStyles.mb14,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Icon(
+                                                    Icons.replay_circle_filled,
+                                                    color: Colors.blue,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              showAlertDialog(
+                                                  context, recyledata, index);
+                                              //   data[index][1]['name'],
+                                              // data[index][0]
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "Delete",
+                                                    style: TextStyles.mb14,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Icon(
+                                                    Icons.delete,
+                                                    color: Colors.red,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ).paddingSymmetric(horizontal: 10),
                                     ],
-                                  ).paddingSymmetric(horizontal: 10)
-                                ],
-                              ),
-                            ),
-                            Divider(thickness: 1)
-                          ],
-                        );
-                      }).paddingSymmetric(horizontal: 10),
-                ),
+                                  ),
+                                ),
+                                Divider(thickness: 1)
+                              ],
+                            );
+                          }).paddingSymmetric(horizontal: 10),
+                    ),
+            ],
+          ),
+          isloading ? Center(child: CircularProgressIndicator()) : Container()
         ],
       ),
+      floatingActionButton: recyledata.length > 0
+          ? GestureDetector(
+              onTap: () async {
+                print(recyledata.length);
+                print(Idlist.length);
+                setState(() {
+                  isloading = true;
+                });
+                for (var i = 0; i < recyledata.length; i++) {
+                  var id = Idlist[i];
+                  await Provider.of<Insetdatamodel>(context, listen: false)
+                      .deleterecord(id);
+                }
+                setState(() {
+                  recyledata.clear();
+                  isloading = false;
+                  // Idlist.removeAt(i);
+                });
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.red, borderRadius: BorderRadius.circular(10)),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Text("Delete all Record permanently",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold)),
+              ).paddingOnly(bottom: 10),
+            )
+          : Container(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -201,10 +246,14 @@ class _Recycle_BinState extends State<Recycle_Bin> {
     Widget okButton = TextButton(
       child: Text("Yes"),
       onPressed: () async {
+        var id = list[index][0];
+        setState(() {
+          list.removeAt(index);
+        });
         backScreen(context);
         await Provider.of<Insetdatamodel>(context, listen: false)
-            .deleterecord(list[index][0]);
-        get_recent_deleted_customer();
+            .deleterecord(id);
+        // get_recent_deleted_customer();
       },
     );
     Widget cancelButton = TextButton(
@@ -223,20 +272,26 @@ class _Recycle_BinState extends State<Recycle_Bin> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return alert;
+        return StatefulBuilder(builder: (context, setState) {
+          return alert;
+        });
       },
     );
   }
 
   get_recent_deleted_customer() async {
-  await  FirebaseFirestore.instance
+    Idlist.clear();
+    recyledata.clear();
+    await FirebaseFirestore.instance
         .collection('customer_record')
         .where('deleted', isEqualTo: "1")
         .get()
         .then((QueryDocumentSnapshot) {
       for (var queryDocumentSnapshot in QueryDocumentSnapshot.docs) {
         Map<String, dynamic> fetchdata = queryDocumentSnapshot.data();
+
         setState(() {
+          Idlist.add(queryDocumentSnapshot.id);
           recyledata.add([queryDocumentSnapshot.id, fetchdata]);
         });
       }

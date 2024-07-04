@@ -22,6 +22,7 @@ class Insetdatamodel with ChangeNotifier {
       mobile_no,
       des,
       date,
+      timestamp,
       deletestatus,
       amount,
       image,
@@ -50,7 +51,7 @@ class Insetdatamodel with ChangeNotifier {
       "youllgetamount": " "
     }).then((value) async {
       upadtedocId(value.id, "customer_record");
-    await  insertentry(Collector_id, name, status_collector, des, amount, date,
+    await  insertentry(Collector_id, name, status_collector, des, amount, date, timestamp,
           image, type, value.id, d_status, cnxt, mobile_no, p_image, token);
     }).catchError((error) => print("Failed to add user: $error"));
     notifyListeners();
@@ -66,6 +67,7 @@ class Insetdatamodel with ChangeNotifier {
       'password': password,
       'gender': gender,
       'date': DateFormat('yyyy-dd-MM').format(DateTime.now()),
+      'timespam': DateTime.now().millisecondsSinceEpoch.toString(),
       'role': 'collector',
       'address': " ",
       'p_image': null,
@@ -80,7 +82,7 @@ class Insetdatamodel with ChangeNotifier {
     notifyListeners();
   }
 
-  insertentry(collector_id, name, status_collector, dese, amount, date, image,
+  insertentry(collector_id, name, status_collector, dese, amount, date,timestamp, image,
       type, id, d_status, cnxt, number, p_image, token) async {
     CollectionReference entry =await FirebaseFirestore.instance.collection('Entry');
   await  entry.add({
@@ -91,6 +93,7 @@ class Insetdatamodel with ChangeNotifier {
       'description': dese,
       "amount": amount,
       'date': date,
+      'timespam': timestamp,
       'deleted_status': d_status,
       'bill_image': image,
       "type": type
