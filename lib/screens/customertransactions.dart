@@ -488,7 +488,7 @@ class _CustomertransactionState extends State<Customertransaction> {
                                             amount: entry_data[index]['amount'],
                                             type: entry_data[index]['type'],
                                             mobile_no: widget.mobile_no,
-                                            entry_id: entry_data_id[index]))
+                                            entry_id: entry_data[index]['entryid']))
                                     : nextScreen(
                                         context,
                                         Edit_Entry(
@@ -501,7 +501,7 @@ class _CustomertransactionState extends State<Customertransaction> {
                                             amount: entry_data[index]['amount'],
                                             type: entry_data[index]['type'],
                                             mobile_no: widget.mobile_no,
-                                            entry_id: entry_data_id[index]));
+                                            entry_id: entry_data[index]['entryid']));
                               }
                             } else if (role == "admin") {
                               if (entry_data[index]['status'] == "1") {
@@ -517,8 +517,10 @@ class _CustomertransactionState extends State<Customertransaction> {
                                             contact: null,
                                             amount: entry_data[index]['amount'],
                                             type: entry_data[index]['type'],
+                                            date: entry_data[index]['date'],
+                                            timestamp: entry_data[index]['timespam'],
                                             mobile_no: widget.mobile_no,
-                                            entry_id: entry_data_id[index]))
+                                            entry_id: entry_data[index]['entryid']))
                                     : nextScreen(
                                         context,
                                         Edit_Entry(
@@ -530,8 +532,10 @@ class _CustomertransactionState extends State<Customertransaction> {
                                             contact: widget.contact,
                                             amount: entry_data[index]['amount'],
                                             type: entry_data[index]['type'],
+                                            date: entry_data[index]['date'],
+                                            timestamp: entry_data[index]['timespam'],
                                             mobile_no: widget.mobile_no,
-                                            entry_id: entry_data_id[index]));
+                                            entry_id: entry_data[index]['entryid']));
                               }
                             }
                           },
@@ -569,7 +573,7 @@ class _CustomertransactionState extends State<Customertransaction> {
                                                   style: TextStyles.mn12,
                                                 )
                                               : Text(
-                                                  " No Description",
+                                                  "No Description",
                                                   style: TextStyles.mn12,
                                                 )
                                         ],

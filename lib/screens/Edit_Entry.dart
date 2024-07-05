@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/contact.dart';
 
-
 import '../Constant/TextStyles/Textstyles.dart';
 
 class Edit_Entry extends StatefulWidget {
@@ -19,6 +18,8 @@ class Edit_Entry extends StatefulWidget {
   final entry_id;
   final u_id;
   final des;
+  final date;
+  final timestamp;
   Edit_Entry(
       {Key? key,
       this.contact,
@@ -29,7 +30,9 @@ class Edit_Entry extends StatefulWidget {
       this.mobile_no,
       this.entry_id,
       this.u_id,
-      this.des})
+      this.des,
+      this.date,
+      this.timestamp})
       : super(key: key);
 
   @override
@@ -124,15 +127,11 @@ class _Edit_EntryState extends State<Edit_Entry> {
                                   ),
                             SizedBox(width: 10),
                             widget.contact == null
-                                ? Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.6,
-                                    child: Text(
-                                      widget.name.toString(),
-                                      style: TextStyles.mb14,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                                ? Text(
+                                    widget.name.toString(),
+                                    style: TextStyles.mb14,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   )
                                 : Text(
                                     widget.contact!.displayName.toString(),
@@ -169,6 +168,8 @@ class _Edit_EntryState extends State<Edit_Entry> {
                                             des: widget.des,
                                             mobile_no: widget.mobile_no,
                                             name: widget.name,
+                                            date: widget.date,
+                                            timestamp: widget.timestamp,
                                             amount: widget.amount,
                                             entry_id: widget.entry_id))
                                     : nextScreen(
@@ -179,6 +180,8 @@ class _Edit_EntryState extends State<Edit_Entry> {
                                           des: widget.des,
                                           mobile_no: widget.mobile_no,
                                           name: widget.name,
+                                          date: widget.date,
+                                          timestamp: widget.timestamp,
                                           amount: widget.amount,
                                           entry_id: widget.entry_id,
                                           token: "",
@@ -198,7 +201,6 @@ class _Edit_EntryState extends State<Edit_Entry> {
                               )),
                           TextButton(
                               onPressed: () {
-                                print('hii');
                                 showAlertDialog();
                               },
                               child: Row(

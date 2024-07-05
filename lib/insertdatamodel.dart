@@ -32,11 +32,12 @@ class Insetdatamodel with ChangeNotifier {
       address,
       cnxt,
       token) async {
-    final users = await FirebaseFirestore.instance.collection('customer_record');
+    final users =
+        await FirebaseFirestore.instance.collection('customer_record');
     // final document_id =
     //     FirebaseFirestore.instance.collection('customer_record').doc().id;
 
-  await  users.add({
+    await users.add({
       'id': "",
       'name': name.toString(),
       'mobile_no': mobile_no.toString(),
@@ -51,8 +52,22 @@ class Insetdatamodel with ChangeNotifier {
       "youllgetamount": " "
     }).then((value) async {
       upadtedocId(value.id, "customer_record");
-    await  insertentry(Collector_id, name, status_collector, des, amount, date, timestamp,
-          image, type, value.id, d_status, cnxt, mobile_no, p_image, token);
+      await insertentry(
+          Collector_id,
+          name,
+          status_collector,
+          des,
+          amount,
+          date,
+          timestamp,
+          image,
+          type,
+          value.id,
+          d_status,
+          cnxt,
+          mobile_no,
+          p_image,
+          token);
     }).catchError((error) => print("Failed to add user: $error"));
     notifyListeners();
   }
@@ -82,10 +97,26 @@ class Insetdatamodel with ChangeNotifier {
     notifyListeners();
   }
 
-  insertentry(collector_id, name, status_collector, dese, amount, date,timestamp, image,
-      type, id, d_status, cnxt, number, p_image, token) async {
-    CollectionReference entry =await FirebaseFirestore.instance.collection('Entry');
-  await  entry.add({
+  insertentry(
+      collector_id,
+      name,
+      status_collector,
+      dese,
+      amount,
+      date,
+      timestamp,
+      image,
+      type,
+      id,
+      d_status,
+      cnxt,
+      number,
+      p_image,
+      token) async {
+    CollectionReference entry =
+        await FirebaseFirestore.instance.collection('Entry');
+    await entry.add({
+      'entryid': "",
       'collector_id': collector_id,
       'user_id': id,
       'name': name,
@@ -98,6 +129,10 @@ class Insetdatamodel with ChangeNotifier {
       'bill_image': image,
       "type": type
     }).then((value) {
+      print(value.id.toString());
+      entry
+          .doc(value.id)
+          .update({'entryid': value.id}).then((value) => print("upadte docid"));
       nextScreen(
           cnxt,
           Customertransaction(
@@ -107,7 +142,9 @@ class Insetdatamodel with ChangeNotifier {
             token: token,
           ));
       print("inserted entry");
-    }).catchError((error) => print("Failed to add user: $error"));
+    }).catchError((error) {
+      print("Failed to add user: $error");
+    });
 
     final users = FirebaseFirestore.instance.collection('customer_record');
     users
@@ -151,7 +188,7 @@ class Insetdatamodel with ChangeNotifier {
     });
   }
 
-  Future<double> netamount() async{
+  Future<double> netamount() async {
     return await gettotal_amount_gave() - await gettotal_amount_got();
   }
 
@@ -179,7 +216,8 @@ class Insetdatamodel with ChangeNotifier {
         print('total gave' + total_amount_gave.toString());
       }
     });
-     print('total gave------------------**************' + total_amount_gave.toString());
+    print('total gave------------------**************' +
+        total_amount_gave.toString());
     return total_amount_gave;
   }
 
@@ -311,15 +349,15 @@ class Insetdatamodel with ChangeNotifier {
 
   deleterecord(id) async {
     CollectionReference users_delete =
-      await   FirebaseFirestore.instance.collection('customer_record');
+        await FirebaseFirestore.instance.collection('customer_record');
 
-   await users_delete
+    await users_delete
         .doc(id)
         .delete()
         .then((value) => print("User Deleted"))
         .catchError((error) => print("Failed to delete user: $error"));
 
-   await FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('Entry')
         .where('user_id', isEqualTo: id)
         .get()

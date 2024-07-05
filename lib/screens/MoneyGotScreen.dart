@@ -31,6 +31,9 @@ class MoneyGotScreen extends StatefulWidget {
   final des;
   final p_image;
   final token;
+  final timestamp;
+  final date;
+
   MoneyGotScreen({
     Key? key,
     required this.mobile_no,
@@ -42,6 +45,8 @@ class MoneyGotScreen extends StatefulWidget {
     this.des,
     this.p_image,
     this.token,
+    this.timestamp,
+    this.date,
   }) : super(key: key);
 
   @override
@@ -53,7 +58,6 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
   int amountshow = 0;
   TextEditingController description = TextEditingController();
   TextEditingController dateinput = TextEditingController();
-  final databaseReference = FirebaseDatabase.instance.reference();
   File? imageFile;
   String? validation;
   bool valid = false;
@@ -65,14 +69,14 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
 
   @override
   void initState() {
-    print("got screen" + widget.token.toString());
+    print("got screen" + widget.date.toString());
 
     getrole();
     if (widget.amount != null) {
       amount.text = widget.amount;
       description.text = widget.des;
+      dateinput.text = widget.date;
     }
-    // printFirebase('customer_record');
     super.initState();
   }
 
@@ -185,8 +189,12 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
                           child: DateTimePicker(
                             type: DateTimePickerType.date,
                             dateMask: 'd MMM, yyyy',
-                            initialValue: DateFormat("yyyy-MM-dd")
+                            initialValue: widget.date == null || widget.date == ""?
+                           DateFormat("yyyy-MM-dd")
                                 .format(DateTime.now())
+                                .toString():
+                            DateFormat("yyyy-MM-dd")
+                                .format(DateTime.parse(widget.date.toString()))
                                 .toString(),
                             firstDate: DateTime(2000),
                             lastDate: DateTime(2100),
@@ -263,11 +271,11 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
                 validation = 'please enter values';
               });
             } else {
-              setState(() {
-                isloading = true;
-              });
               if (widget.amount != null) {
-                if (isloading) {
+                if (!isloading) {
+                  setState(() {
+                    isloading = true;
+                  });
                   //  update entry
                   await update_entry();
                   await updatecustomerlastupdate_youwillget();
@@ -277,9 +285,15 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
                           p_image: widget.p_image == " " ? " " : widget.p_image,
                           name: widget.name,
                           id: widget.u_id));
+                  setState(() {
+                    isloading = false;
+                  });
                 }
               } else {
-                if (isloading) {
+                if (!isloading) {
+                  setState(() {
+                    isloading = true;
+                  });
                   if (widget.iscustomer == "0") {
                     //  is customer 0 = new customer
                     SharedPreferences prefs =
@@ -338,11 +352,11 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
                     updatetotaluserwillget();
                     sendnotification();
                   }
+                  setState(() {
+                    isloading = false;
+                  });
                 }
               }
-              setState(() {
-                isloading = false;
-              });
             }
           },
           label: isloading
@@ -461,9 +475,9 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
             jsondata: {
           'amount': amount.text,
           'description': description.text,
-          'date': dateinput.text.isEmpty
-              ? DateFormat('yyyy-MM-dd').format(DateTime.now()).toString()
-              : dateinput.text,
+          'date': dateinput.text.isEmpty ? widget.date : dateinput.text,
+          'timespam':
+              DateTime.parse(dateinput.text).millisecondsSinceEpoch.toString()
         });
   }
 }

@@ -5,10 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:intl/intl.dart';
-
 import '../Constant/TextStyles/Textstyles.dart';
-import 'Customer_profile.dart';
-
 class Collection_List extends StatefulWidget {
   final mobile_no;
   final name;
