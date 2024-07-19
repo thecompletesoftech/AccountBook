@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:account_book/Api/Api.dart';
 import 'package:account_book/Constant/TextStyles/Textstyles.dart';
@@ -189,13 +190,15 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
                           child: DateTimePicker(
                             type: DateTimePickerType.date,
                             dateMask: 'd MMM, yyyy',
-                            initialValue: widget.date == null || widget.date == ""?
-                           DateFormat("yyyy-MM-dd")
-                                .format(DateTime.now())
-                                .toString():
-                            DateFormat("yyyy-MM-dd")
-                                .format(DateTime.parse(widget.date.toString()))
-                                .toString(),
+                            initialValue: widget.date == null ||
+                                    widget.date == ""
+                                ? DateFormat("yyyy-MM-dd")
+                                    .format(DateTime.now())
+                                    .toString()
+                                : DateFormat("yyyy-MM-dd")
+                                    .format(
+                                        DateTime.parse(widget.date.toString()))
+                                    .toString(),
                             firstDate: DateTime(2000),
                             lastDate: DateTime(2100),
                             icon: Icon(Icons.event),
@@ -265,6 +268,7 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
+            log('wwwwwww');
             if (amount.text.isEmpty) {
               setState(() {
                 valid = true;
@@ -272,6 +276,7 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
               });
             } else {
               if (widget.amount != null) {
+                log('qqqqq');
                 if (!isloading) {
                   setState(() {
                     isloading = true;
@@ -439,6 +444,8 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
   }
 
   updatetotaluserwillget() async {
+    log("messagewwww");
+    print("object");
     double userwillget =
         await Provider.of<Insetdatamodel>(context, listen: false)
             .get_total_Userwillget(widget.u_id);
@@ -446,7 +453,10 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
         .updatecustomertable(
             collectionname: "customer_record",
             id: widget.u_id,
-            jsondata: {"youllgetamount": userwillget});
+            jsondata: {
+          "youllgetamount": userwillget,
+          'last_updated_date': DateTime.now()
+        });
   }
 
   updatecustomerlastupdate_youwillget() async {
@@ -459,11 +469,13 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
             id: widget.u_id,
             jsondata: {
           "youllgetamount": userwillget,
-          'last_updated_date': dateinput.text.isEmpty
-              ? dateinput.text = DateFormat('yyyy-MM-dd HH:mm')
+          'last_updated_date':
+              //  dateinput.text.isEmpty
+              //     ?
+              dateinput.text = DateFormat('yyyy-MM-dd HH:mm')
                   .format(DateTime.now())
                   .toString()
-              : dateinput.text
+          // : dateinput.text
         });
   }
 

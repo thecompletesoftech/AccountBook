@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:account_book/Constant/navigaotors/Navagate_Next.dart';
 import 'package:account_book/screens/customertransactions.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:get/utils.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -269,9 +271,8 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                                 borderRadius:
                                                     BorderRadius.circular(50),
                                                 child: CachedNetworkImage(
-                                                  imageUrl:
-                                                      seachresult[index]
-                                                          ['p_image'],
+                                                  imageUrl: seachresult[index]
+                                                      ['p_image'],
                                                   placeholder: (context, url) =>
                                                       CircularProgressIndicator(),
                                                   errorWidget:
@@ -344,6 +345,24 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                 itemBuilder: (BuildContext context, int index) {
                                   var fname =
                                       documents[index]['name'].split('');
+
+                                  // DateTime dateTime = documents[index] == 2
+                                  //     ? DateTime.fromMillisecondsSinceEpoch(
+                                  //         documents[index]['last_updated_date']
+                                  //                     .seconds *
+                                  //                 1000 +
+                                  //             documents[index]
+                                  //                         ['last_updated_date']
+                                  //                     .nanoseconds ~/
+                                  //                 1000000)
+                                  //     : DateTime.parse(documents[index]
+                                  //         ['last_updated_date']);
+                                  // String formattedDate =
+                                  //     DateFormat('yyyy-MM-dd HH:mm:ss')
+                                  //         .format(dateTime);
+                                  log("Dateee" +
+                                      documents[index]['last_updated_date']
+                                          .toString());
                                   return GestureDetector(
                                     onTap: () async {
                                       GetStorage()
@@ -389,10 +408,9 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                                 DismissDirection.endToStart) {
                                             } else {
                                               setState(() {
-                                                _callNumber(
-                                                    documents[index]
-                                                            ['mobile_no']
-                                                        .toString());
+                                                _callNumber(documents[index]
+                                                        ['mobile_no']
+                                                    .toString());
                                               });
                                             }
                                           },
@@ -416,9 +434,10 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                                                 .circular(50),
                                                         child:
                                                             CachedNetworkImage(
-                                                          imageUrl:
-                                                              documents[index]
-                                                                  ['p_image'].toString(),
+                                                          imageUrl: documents[
+                                                                      index]
+                                                                  ['p_image']
+                                                              .toString(),
                                                           placeholder: (context,
                                                                   url) =>
                                                               CircularProgressIndicator(),

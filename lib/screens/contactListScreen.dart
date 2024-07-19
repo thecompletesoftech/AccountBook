@@ -369,7 +369,7 @@ class _ContactListScreenState extends State<ContactListScreen> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Countinue',
+                'Continue',
                 style: TextStyles.withColor(TextStyles.mb14, Colors.white),
               ),
             ),

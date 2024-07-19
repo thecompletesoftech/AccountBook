@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/imac/Documents/Flutter Projects/The complete softech projects/AccountBook/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-v24/values-v24.xml",
+            "outputFile": "/Users/tcs/Documents/Flutter_Projects/Rishabh/AccountBook/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-v24/values-v24.xml",
             "map": [
                 {
-                    "source": "/Users/imac/.gradle/caches/transforms-3/57e80e9452316ad9163cdfa9f1221e05/transformed/appcompat-1.2.0/res/values-v24/values-v24.xml",
+                    "source": "/Users/tcs/.gradle/caches/transforms-3/57e80e9452316ad9163cdfa9f1221e05/transformed/appcompat-1.2.0/res/values-v24/values-v24.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "/Users/imac/.gradle/caches/transforms-3/e48dbb385404f03676c49da9eaca1d82/transformed/media-1.1.0/res/values-v24/values-v24.xml",
+                    "source": "/Users/tcs/.gradle/caches/transforms-3/e48dbb385404f03676c49da9eaca1d82/transformed/media-1.1.0/res/values-v24/values-v24.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",

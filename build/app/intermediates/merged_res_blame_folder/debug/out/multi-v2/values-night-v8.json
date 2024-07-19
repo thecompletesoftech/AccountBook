@@ -1,10 +1,27 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/imac/Documents/Flutter Projects/The complete softech projects/AccountBook/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
+            "outputFile": "/Users/tcs/Documents/Flutter_Projects/Rishabh/AccountBook/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "/Users/imac/Documents/Flutter Projects/The complete softech projects/AccountBook/android/app/src/main/res/values-night/styles.xml",
+                    "source": "/Users/tcs/.gradle/caches/transforms-3/57e80e9452316ad9163cdfa9f1221e05/transformed/appcompat-1.2.0/res/values-night-v8/values-night-v8.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,125,209,293,389,491,593,687",
+                        "endColumns": "69,83,83,95,101,101,93,88",
+                        "endOffsets": "120,204,288,384,486,588,682,771"
+                    },
+                    "to": {
+                        "startLines": "10,11,12,13,14,15,16,17",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "532,602,686,770,866,968,1070,1164",
+                        "endColumns": "69,83,83,95,101,101,93,88",
+                        "endOffsets": "597,681,765,861,963,1065,1159,1248"
+                    }
+                },
+                {
+                    "source": "/Users/tcs/Documents/Flutter_Projects/Rishabh/AccountBook/android/app/src/main/res/values-night/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
@@ -20,23 +37,6 @@
                         "endLines": "6,9",
                         "endColumns": "12,12",
                         "endOffsets": "358,527"
-                    }
-                },
-                {
-                    "source": "/Users/imac/.gradle/caches/transforms-3/57e80e9452316ad9163cdfa9f1221e05/transformed/appcompat-1.2.0/res/values-night-v8/values-night-v8.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,125,209,293,389,491,593,687",
-                        "endColumns": "69,83,83,95,101,101,93,88",
-                        "endOffsets": "120,204,288,384,486,588,682,771"
-                    },
-                    "to": {
-                        "startLines": "10,11,12,13,14,15,16,17",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "532,602,686,770,866,968,1070,1164",
-                        "endColumns": "69,83,83,95,101,101,93,88",
-                        "endOffsets": "597,681,765,861,963,1065,1159,1248"
                     }
                 }
             ]

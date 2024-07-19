@@ -46,7 +46,8 @@ class Insetdatamodel with ChangeNotifier {
       'deleted': deletestatus,
       'p_image': p_image,
       "address": address,
-      "last_updated_date": date,
+      "last_updated_date": date =
+          DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()).toString(),
       "password": "123456",
       "token": "0",
       "youllgetamount": " "

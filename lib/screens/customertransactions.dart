@@ -469,8 +469,8 @@ class _CustomertransactionState extends State<Customertransaction> {
                       itemBuilder: (BuildContext context, int index) {
                         // print("entry_id" + entry_data_id[index].toString());
                         // print("name" + widget.name.toString());
-                        entry_data
-                            .sort((b, a) => a['timespam'].compareTo(b['timespam']));
+                        entry_data.sort(
+                            (b, a) => a['timespam'].compareTo(b['timespam']));
                         return GestureDetector(
                           onTap: () {
                             if (role == "collector") {
@@ -488,7 +488,8 @@ class _CustomertransactionState extends State<Customertransaction> {
                                             amount: entry_data[index]['amount'],
                                             type: entry_data[index]['type'],
                                             mobile_no: widget.mobile_no,
-                                            entry_id: entry_data[index]['entryid']))
+                                            entry_id: entry_data[index]
+                                                ['entryid']))
                                     : nextScreen(
                                         context,
                                         Edit_Entry(
@@ -501,9 +502,12 @@ class _CustomertransactionState extends State<Customertransaction> {
                                             amount: entry_data[index]['amount'],
                                             type: entry_data[index]['type'],
                                             mobile_no: widget.mobile_no,
-                                            entry_id: entry_data[index]['entryid']));
+                                            entry_id: entry_data[index]
+                                                ['entryid']));
                               }
-                            } else if (role == "admin") {
+                            } else
+                            //  if (role == "admin")
+                            {
                               if (entry_data[index]['status'] == "1") {
                                 widget.contact == null
                                     ? nextScreen(
@@ -518,9 +522,11 @@ class _CustomertransactionState extends State<Customertransaction> {
                                             amount: entry_data[index]['amount'],
                                             type: entry_data[index]['type'],
                                             date: entry_data[index]['date'],
-                                            timestamp: entry_data[index]['timespam'],
+                                            timestamp: entry_data[index]
+                                                ['timespam'],
                                             mobile_no: widget.mobile_no,
-                                            entry_id: entry_data[index]['entryid']))
+                                            entry_id: entry_data[index]
+                                                ['entryid']))
                                     : nextScreen(
                                         context,
                                         Edit_Entry(
@@ -533,9 +539,11 @@ class _CustomertransactionState extends State<Customertransaction> {
                                             amount: entry_data[index]['amount'],
                                             type: entry_data[index]['type'],
                                             date: entry_data[index]['date'],
-                                            timestamp: entry_data[index]['timespam'],
+                                            timestamp: entry_data[index]
+                                                ['timespam'],
                                             mobile_no: widget.mobile_no,
-                                            entry_id: entry_data[index]['entryid']));
+                                            entry_id: entry_data[index]
+                                                ['entryid']));
                               }
                             }
                           },
