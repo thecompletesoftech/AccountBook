@@ -316,7 +316,13 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
                                 ? dateinput.text = DateFormat('yyyy-MM-dd')
                                     .format(DateTime.now())
                                 : dateinput.text,
-                            DateTime.now().millisecondsSinceEpoch.toString(),
+                            dateinput.text.isEmpty
+                                ? DateTime.now()
+                                    .millisecondsSinceEpoch
+                                    .toString()
+                                : DateTime.parse(dateinput.text)
+                                    .millisecondsSinceEpoch
+                                    .toString(),
                             '0',
                             amount.text,
                             imageFile == null ? ' ' : imageFile!.path,
@@ -345,7 +351,13 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
                                 ? dateinput.text = DateFormat('yyyy-MM-dd')
                                     .format(DateTime.now())
                                 : dateinput.text,
-                            DateTime.now().millisecondsSinceEpoch.toString(),
+                            dateinput.text.isEmpty
+                                ? DateTime.now()
+                                    .millisecondsSinceEpoch
+                                    .toString()
+                                : DateTime.parse(dateinput.text)
+                                    .millisecondsSinceEpoch
+                                    .toString(),
                             imageFile == null ? ' ' : imageFile!.path,
                             "1",
                             widget.u_id,
@@ -455,8 +467,9 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
             id: widget.u_id,
             jsondata: {
           "youllgetamount": userwillget,
-          'last_updated_date':
-              DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()).toString(),
+          'last_updated_date': DateFormat('yyyy-MM-dd HH:mm:ss')
+              .format(DateTime.now())
+              .toString(),
         });
   }
 
@@ -473,7 +486,7 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
           'last_updated_date':
               //  dateinput.text.isEmpty
               //     ?
-              dateinput.text = DateFormat('yyyy-MM-dd HH:mm')
+              dateinput.text = DateFormat('yyyy-MM-dd HH:mm:ss')
                   .format(DateTime.now())
                   .toString()
           // : dateinput.text

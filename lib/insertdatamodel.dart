@@ -47,7 +47,7 @@ class Insetdatamodel with ChangeNotifier {
       'p_image': p_image,
       "address": address,
       "last_updated_date": date =
-          DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()).toString(),
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()).toString(),
       "password": "123456",
       "token": "0",
       "youllgetamount": " "
@@ -152,7 +152,7 @@ class Insetdatamodel with ChangeNotifier {
         .doc(id)
         .update({
           'last_updated_date':
-              DateFormat('yyy-MM-dd HH:mm').format(DateTime.now())
+              DateFormat('yyy-MM-dd HH:mm:ss').format(DateTime.now())
         })
         .then((value) => print("last date updated"))
         .catchError((error) => print("Failed to update user: $error"));

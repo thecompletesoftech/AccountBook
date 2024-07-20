@@ -49,7 +49,9 @@ class MoneyGaveScreen extends StatefulWidget {
     this.entry_id,
     this.des,
     this.p_image,
-    this.token, this.date, this.timestamp,
+    this.token,
+    this.date,
+    this.timestamp,
   }) : super(key: key);
 
   @override
@@ -200,13 +202,15 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
                           child: DateTimePicker(
                             type: DateTimePickerType.date,
                             dateMask: 'd MMM, yyyy',
-                            initialValue: widget.date == null || widget.date == ""?
-                           DateFormat("yyyy-MM-dd")
-                                .format(DateTime.now())
-                                .toString():
-                            DateFormat("yyyy-MM-dd")
-                                .format(DateTime.parse(widget.date.toString()))
-                                .toString(),
+                            initialValue: widget.date == null ||
+                                    widget.date == ""
+                                ? DateFormat("yyyy-MM-dd")
+                                    .format(DateTime.now())
+                                    .toString()
+                                : DateFormat("yyyy-MM-dd")
+                                    .format(
+                                        DateTime.parse(widget.date.toString()))
+                                    .toString(),
                             firstDate: DateTime(2000),
                             lastDate: DateTime(2100),
                             icon: Icon(Icons.event),
@@ -363,7 +367,11 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
                             dateinput.text.isEmpty
                                 ? datetime.toString()
                                 : dateinput.text,
-                            dt.millisecondsSinceEpoch.toString(),
+                            dateinput.text.isEmpty
+                                ? dt.millisecondsSinceEpoch.toString()
+                                : DateTime.parse(dateinput.text)
+                                    .millisecondsSinceEpoch
+                                    .toString(),
                             '0',
                             amount.text,
                             imageFile == null ? ' ' : imageFile!.path,
@@ -391,7 +399,11 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
                             dateinput.text.isEmpty
                                 ? datetime.toString()
                                 : dateinput.text,
-                            dt.millisecondsSinceEpoch.toString(),
+                            dateinput.text.isEmpty
+                                ? dt.millisecondsSinceEpoch.toString()
+                                : DateTime.parse(dateinput.text)
+                                    .millisecondsSinceEpoch
+                                    .toString(),
                             imageFile == null ? ' ' : imageFile!.path,
                             "0",
                             widget.u_id,
@@ -489,13 +501,13 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
             id: widget.u_id,
             jsondata: {
           "youllgetamount": userwillget,
-          'last_updated_date': 
-          // dateinput.text.isEmpty
-          //     ?
-               dateinput.text = DateFormat('yyyy-MM-dd HH:mm')
+          'last_updated_date':
+              // dateinput.text.isEmpty
+              //     ?
+              dateinput.text = DateFormat('yyyy-MM-dd HH:mm:ss')
                   .format(DateTime.now())
                   .toString()
-              // : dateinput.text
+          // : dateinput.text
         });
   }
 
@@ -507,10 +519,9 @@ class _MoneyGaveScreenState extends State<MoneyGaveScreen> {
             jsondata: {
           'amount': amount.text,
           'description': description.text,
-          'date': dateinput.text.isEmpty
-              ? widget.date
-              : dateinput.text,
-          'timespam':  DateTime.parse(dateinput.text).millisecondsSinceEpoch.toString(),
+          'date': dateinput.text.isEmpty ? widget.date : dateinput.text,
+          'timespam':
+              DateTime.parse(dateinput.text).millisecondsSinceEpoch.toString(),
         });
   }
 }

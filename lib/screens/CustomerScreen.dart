@@ -345,24 +345,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                 itemBuilder: (BuildContext context, int index) {
                                   var fname =
                                       documents[index]['name'].split('');
-
-                                  // DateTime dateTime = documents[index] == 2
-                                  //     ? DateTime.fromMillisecondsSinceEpoch(
-                                  //         documents[index]['last_updated_date']
-                                  //                     .seconds *
-                                  //                 1000 +
-                                  //             documents[index]
-                                  //                         ['last_updated_date']
-                                  //                     .nanoseconds ~/
-                                  //                 1000000)
-                                  //     : DateTime.parse(documents[index]
-                                  //         ['last_updated_date']);
-                                  // String formattedDate =
-                                  //     DateFormat('yyyy-MM-dd HH:mm:ss')
-                                  //         .format(dateTime);
-                                  log("Dateee" +
-                                      documents[index]['last_updated_date']
-                                          .toString());
                                   return GestureDetector(
                                     onTap: () async {
                                       GetStorage()

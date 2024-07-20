@@ -104,11 +104,15 @@ class _CustomertransactionState extends State<Customertransaction> {
     // print('u_id' + widget.id.toString());
     // print('u_id for token' + widget.token.toString());
     // print("p_image" + widget.p_image);
-    _getdata("Entry", widget.id);
-    get_gave_total("Entry", widget.id);
-    get_got_total("Entry", widget.id);
-    updatetotaluserwillget();
+    callapi();
     super.initState();
+  }
+
+  callapi() async {
+    await _getdata("Entry", widget.id);
+    await get_gave_total("Entry", widget.id);
+    await get_got_total("Entry", widget.id);
+    await updatetotaluserwillget();
   }
 
   updatetotaluserwillget() async {
@@ -470,8 +474,12 @@ class _CustomertransactionState extends State<Customertransaction> {
                       itemBuilder: (BuildContext context, int index) {
                         // print("entry_id" + entry_data_id[index].toString());
                         // print("name" + widget.name.toString());
+                        print('------------------------' +
+                            entry_data[index]['amount'].toString());
                         entry_data.sort(
                             (b, a) => a['timespam'].compareTo(b['timespam']));
+                        print('------------------------' +
+                            entry_data[index]['amount'].toString());
                         return GestureDetector(
                           onTap: () {
                             print("object" + role.toString());
