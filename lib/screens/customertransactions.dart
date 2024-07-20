@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:math';
 
 import 'package:account_book/screens/Credit_Score.dart';
 import 'package:account_book/screens/Customer_profile.dart';
@@ -473,6 +474,7 @@ class _CustomertransactionState extends State<Customertransaction> {
                             (b, a) => a['timespam'].compareTo(b['timespam']));
                         return GestureDetector(
                           onTap: () {
+                            print("object" + role.toString());
                             if (role == "collector") {
                               if (entry_data[index]['status'] == "0") {
                                 widget.contact == null
@@ -505,9 +507,7 @@ class _CustomertransactionState extends State<Customertransaction> {
                                             entry_id: entry_data[index]
                                                 ['entryid']));
                               }
-                            } else
-                            //  if (role == "admin")
-                            {
+                            } else if (role == "admin") {
                               if (entry_data[index]['status'] == "1") {
                                 widget.contact == null
                                     ? nextScreen(

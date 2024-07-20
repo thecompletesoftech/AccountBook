@@ -479,6 +479,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                                               ],
                                             ),
                                             subtitle: Text(
+                                              // '',
                                               Jiffy(documents[index]
                                                           ['last_updated_date']
                                                       .toString())

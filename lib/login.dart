@@ -121,7 +121,7 @@ class _loginState extends State<login> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(60.0),
           child: AppBar(
-            automaticallyImplyLeading: false,
+              automaticallyImplyLeading: false,
               elevation: 2.0,
               backgroundColor: Colors.white,
               systemOverlayStyle: SystemUiOverlayStyle(
@@ -289,7 +289,7 @@ class _loginState extends State<login> {
           fetchcollector =
               data.where((element) => element['role'] == "collector").toList();
 
-          print(fetchcollector);
+          print("---" + fetchcollector.toString());
 
           if (fetchcollector.length > 0) {
             prefs.setString("role", "collector");
@@ -312,7 +312,7 @@ class _loginState extends State<login> {
             prefs.setString("role", "admin");
             prefs.setString("fcmtoken_admin", fcmtoken);
             prefs.setString("admin_id", data[0]['id']);
-            
+
             final users = FirebaseFirestore.instance.collection("admin");
             users
                 .doc(prefs.getString("login_person_id"))

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:account_book/Constant/Colors/Colors.dart';
 import 'package:account_book/Constant/Strings/Strings.dart';
@@ -267,9 +268,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   getrole() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    log("Roe===> " + prefs.getString('role').toString());
     setState(() {
       role = prefs.getString('role')!;
     });
+    log("Role===> " + role.toString());
   }
 
   // getbusiness_name() async {
