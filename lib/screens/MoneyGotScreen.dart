@@ -455,7 +455,8 @@ class _MoneyGaveScreenState extends State<MoneyGotScreen> {
             id: widget.u_id,
             jsondata: {
           "youllgetamount": userwillget,
-          'last_updated_date': DateTime.now()
+          'last_updated_date':
+              DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()).toString(),
         });
   }
 
